@@ -1,0 +1,22 @@
+/* src/components/AnimatedText.css */
+
+.animated-gradient-text {
+  background: linear-gradient(90deg, #ff7f50, #1e90ff, #32cd32, #ff4500);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientAnimation 6s ease infinite;
+}
+
+/* Define the keyframes for gradient color change */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

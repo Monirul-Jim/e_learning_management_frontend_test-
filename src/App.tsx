@@ -1,9 +1,11 @@
-import "./App.css";
+import HeroSection from "./Home/HeroSection/HeroSection";
+import Navbar from "./Home/Navbar/Navbar";
 
 function App() {
   return (
     <>
-      <h1>Hello world !!</h1>
+      <Navbar />
+      <HeroSection />
     </>
   );
 }
