@@ -70,6 +70,14 @@ const Navbar: React.FC = () => {
       >
         Login
       </a>
+      <a
+        href="/register"
+        className={`${
+          isMenuOpen ? "block" : "hidden"
+        } md:flex w-full md:w-auto px-4 py-2 text-right bg-teal-900 hover:bg-teal-500 text-white md:rounded`}
+      >
+        Register
+      </a>
     </nav>
   );
 };
