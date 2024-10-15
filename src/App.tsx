@@ -1,11 +1,11 @@
-import HeroSection from "./Home/HeroSection/HeroSection";
+import { Outlet } from "react-router-dom";
 import Navbar from "./Home/Navbar/Navbar";
 
 function App() {
   return (
     <>
       <Navbar />
-      <HeroSection />
+      <Outlet />
     </>
   );
 }

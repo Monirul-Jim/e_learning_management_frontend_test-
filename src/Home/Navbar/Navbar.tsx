@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
         } w-full md:w-auto md:flex text-right text-bold mt-5 md:mt-0  md:border-none`}
       >
         <a
-          href="#"
+          href="/"
           className="block md:inline-block text-white font-semibold hover:text-teal-500 px-3 py-3  md:border-none"
         >
           Home
@@ -63,12 +63,12 @@ const Navbar: React.FC = () => {
         </a>
       </div>
       <a
-        href="#"
+        href="/login"
         className={`${
           isMenuOpen ? "block" : "hidden"
         } md:flex w-full md:w-auto px-4 py-2 text-right bg-teal-900 hover:bg-teal-500 text-white md:rounded`}
       >
-        Create Account
+        Login
       </a>
     </nav>
   );
