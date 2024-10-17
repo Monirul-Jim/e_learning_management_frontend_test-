@@ -1,22 +1,55 @@
 import { useForm } from "react-hook-form";
 import { useRegisterUserMutation } from "../redux/api/authApi";
+import { toast } from "react-toastify";
+
+export type TUser = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  username: string;
+  password: string;
+  password1: string;
+};
+
 const SignUp = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError, // Added to set specific field errors
     watch,
   } = useForm();
+
   const [registerUser, { isLoading, isError, error }] =
     useRegisterUserMutation();
-  const onSubmit = async (data) => {
+
+  const onSubmit = async (data: TUser) => {
     try {
       await registerUser(data).unwrap();
-    } catch (err) {
-      console.error("Failed to register", err);
+      toast.success("User registered successfully");
+    } catch (err: any) {
+      if (err.data) {
+        // Handle field-specific errors from the server
+        if (err.data.username) {
+          setError("username", { type: "manual", message: err.data.username });
+        }
+        if (err.data.email) {
+          setError("email", { type: "manual", message: err.data.email });
+        }
+        if (err.data.password1) {
+          setError("password1", {
+            type: "manual",
+            message: err.data.password1,
+          });
+        }
+      } else {
+        console.error("Registration error", err);
+      }
     }
   };
+
   const password = watch("password");
+
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-full max-w-md p-6 bg-white shadow-md rounded-md">

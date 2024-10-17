@@ -1,11 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 
-interface DecodedToken {
-  userId: string;
-  exp: number;
-}
-
-const decodeToken = (token: string): DecodedToken => {
-  return jwtDecode<DecodedToken>(token);
+const verifyToken = (token: string) => {
+  return jwtDecode(token);
 };
-export default decodeToken;
+export default verifyToken;
