@@ -248,7 +248,7 @@ const AddCourse = () => {
           </thead>
           <tbody className=" text-sm font-semibold">
             {courseData?.data?.map((course: TCourse) => (
-              <CourseTable course={course} />
+              <CourseTable key={course.id} course={course} />
             ))}
           </tbody>
         </table>

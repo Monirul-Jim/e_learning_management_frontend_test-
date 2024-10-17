@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
 import Login from "../Authectication/Login";
 import SignUp from "../Authectication/SignUp";
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <MainDashboard />,
     children: [
+      {
+        path: "",
+        element: <Navigate to="add-course" />,
+      },
       {
         path: "add-course",
         element: <AddCourse />,

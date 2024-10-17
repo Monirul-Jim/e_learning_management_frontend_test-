@@ -1,4 +1,16 @@
+import { toast } from "react-toastify";
+import { useDeleteCategoryMutation } from "../../../redux/api/categoryApi";
+
 const CourseTable = ({ course }) => {
+  const [deleteCategory] = useDeleteCategoryMutation();
+  const handleCourseDelete = async (id: number) => {
+    try {
+      await deleteCategory(id).unwrap();
+      toast.success("Successfully delete course");
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <tr key={course.id} className="border-b  hover:bg-gray-100">
       <td className="py-3 px-6">{course?.title}</td>
@@ -18,7 +30,7 @@ const CourseTable = ({ course }) => {
         </button>
       </td>
       <td>
-        <button>Delete</button>
+        <button onClick={() => handleCourseDelete(course.id)}>Delete</button>
       </td>
     </tr>
   );

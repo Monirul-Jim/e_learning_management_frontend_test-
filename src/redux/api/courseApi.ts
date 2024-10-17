@@ -15,23 +15,22 @@ const courseApi = baseApi.injectEndpoints({
         url: "/learning/courses/",
         method: "GET",
       }),
-      providesTags: ["course"], // Corrected the tag to match the courses
+      providesTags: ["course"],
     }),
     updateCourse: builder.mutation({
-      // New update endpoint
       query: ({ id, ...updateData }) => ({
         url: `/learning/courses/${id}/`,
         method: "PUT",
         body: updateData,
       }),
-      invalidatesTags: ["course"], // Invalidate course tag after update
+      invalidatesTags: ["course"],
     }),
     deleteCategory: builder.mutation({
       query: (id) => ({
         url: `/learning/courses/${id}/`,
         method: "DELETE",
       }),
-      invalidatesTags: ["category"],
+      invalidatesTags: ["course"],
     }),
   }),
 });
