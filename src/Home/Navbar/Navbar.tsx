@@ -85,12 +85,19 @@
 // export default Navbar;
 import React, { useState } from "react";
 import "./Animated.css";
+import { useAppDispatch, useAppSelector } from "../../redux/feature/hooks";
+import { logout, useCurrentUser } from "../../redux/feature/authSlice";
 
 const Navbar: React.FC = () => {
+  const user = useAppSelector(useCurrentUser);
+  const dispatch = useAppDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -152,24 +159,49 @@ const Navbar: React.FC = () => {
         </a>
       </div>
 
-      <div
-        className={`${
-          isMenuOpen ? "block" : "hidden"
-        } md:flex space-x-4 w-full md:w-auto mt-4 md:mt-0 text-right`}
-      >
-        <a
-          href="/login"
-          className="block md:inline-block px-4 py-2 text-white bg-teal-900 hover:bg-teal-500 rounded md:rounded-none"
-        >
-          Login
-        </a>
-        <a
-          href="/register"
-          className="block md:inline-block px-4 py-2 text-white bg-teal-900 hover:bg-teal-500 rounded md:rounded-none"
-        >
-          Register
-        </a>
-      </div>
+      {user ? (
+        <>
+          <div
+            className={`${
+              isMenuOpen ? "block" : "hidden"
+            } md:flex space-x-4 w-full md:w-auto mt-4 md:mt-0 text-right`}
+          >
+            <a
+              href="/dashboard"
+              className="block md:inline-block px-4 py-2 text-white bg-teal-900 hover:bg-teal-500 rounded md:rounded-none"
+            >
+              Dashboard
+            </a>
+            <button
+              onClick={handleLogout}
+              className="block md:inline-block px-4 py-2 text-white bg-teal-900 hover:bg-teal-500 rounded md:rounded-none"
+            >
+              Logout
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <div
+            className={`${
+              isMenuOpen ? "block" : "hidden"
+            } md:flex space-x-4 w-full md:w-auto mt-4 md:mt-0 text-right`}
+          >
+            <a
+              href="/login"
+              className="block md:inline-block px-4 py-2 text-white bg-teal-900 hover:bg-teal-500 rounded md:rounded-none"
+            >
+              Login
+            </a>
+            <a
+              href="/register"
+              className="block md:inline-block px-4 py-2 text-white bg-teal-900 hover:bg-teal-500 rounded md:rounded-none"
+            >
+              Register
+            </a>
+          </div>
+        </>
+      )}
     </nav>
   );
 };

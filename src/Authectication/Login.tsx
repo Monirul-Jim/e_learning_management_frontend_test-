@@ -100,6 +100,7 @@ const Login = () => {
             {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
+        <a href="/register">Don't have account register</a>
       </div>
     </div>
   );

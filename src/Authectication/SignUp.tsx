@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useRegisterUserMutation } from "../redux/api/authApi";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export type TUser = {
   first_name: string;
@@ -22,11 +23,12 @@ const SignUp = () => {
 
   const [registerUser, { isLoading, isError, error }] =
     useRegisterUserMutation();
-
+  const navigate = useNavigate();
   const onSubmit = async (data: TUser) => {
     try {
       await registerUser(data).unwrap();
       toast.success("User registered successfully");
+      navigate("/login");
     } catch (err: any) {
       if (err.data) {
         // Handle field-specific errors from the server
@@ -178,6 +180,7 @@ const SignUp = () => {
             {isLoading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
+        <a href="/login">Already have account login</a>
       </div>
     </div>
   );
