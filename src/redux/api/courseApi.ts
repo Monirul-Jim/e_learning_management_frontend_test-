@@ -10,20 +10,34 @@ const courseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["course"],
     }),
-    // getCategories: builder.query({
-    //   query: () => ({
-    //     url: "/learning/category/",
-    //     method: "GET",
-    //   }),
-    //   providesTags: ["category"],
-    // }),
-    // deleteCategory: builder.mutation({
-    //   query: (id) => ({
-    //     url: `/learning/category/${id}/`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: ["category"],
-    // }),
+    getCourses: builder.query({
+      query: () => ({
+        url: "/learning/courses/",
+        method: "GET",
+      }),
+      providesTags: ["course"], // Corrected the tag to match the courses
+    }),
+    updateCourse: builder.mutation({
+      // New update endpoint
+      query: ({ id, ...updateData }) => ({
+        url: `/learning/courses/${id}/`,
+        method: "PUT",
+        body: updateData,
+      }),
+      invalidatesTags: ["course"], // Invalidate course tag after update
+    }),
+    deleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `/learning/courses/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["category"],
+    }),
   }),
 });
-export const { useAddCourseMutation } = courseApi;
+
+export const {
+  useAddCourseMutation,
+  useGetCoursesQuery,
+  useUpdateCourseMutation,
+} = courseApi;

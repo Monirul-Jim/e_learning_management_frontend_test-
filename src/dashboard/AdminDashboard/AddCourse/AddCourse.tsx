@@ -1,12 +1,19 @@
 import { useForm } from "react-hook-form";
-import { useAddCourseMutation } from "../../../redux/api/courseApi";
+import {
+  useAddCourseMutation,
+  useGetCoursesQuery,
+} from "../../../redux/api/courseApi";
 import { useGetCategoriesQuery } from "../../../redux/api/categoryApi"; // To fetch categories
+import { toast } from "react-toastify";
+import CourseTable from "./CourseTable";
 
-type TCourse = {
+export type TCourse = {
   image: string;
+  id: number;
   title: string;
   description: string;
-  category: number; // Assuming category is selected by ID
+  price: number;
+  categories: number[];
 };
 
 const AddCourse = () => {
@@ -17,21 +24,68 @@ const AddCourse = () => {
     reset,
   } = useForm<TCourse>();
 
-  const [addCourse, { isLoading, isSuccess, isError, error }] =
-    useAddCourseMutation();
+  const [addCourse, { isLoading, isError, error }] = useAddCourseMutation();
+  const {
+    data: courseData,
+    isLoading: courseLoading,
+    isError: courseError,
+  } = useGetCoursesQuery(null);
+
   const {
     data: categories,
     isLoading: categoriesLoading,
     error: categoriesError,
   } = useGetCategoriesQuery(null);
 
+  //   const onSubmit = async (data: TCourse) => {
+  //     try {
+  //       await addCourse({
+  //         ...data,
+  //         categories: data.categories.map(Number), // Ensure categories are numbers
+  //       }).unwrap();
+  //       toast.success("Courses added successfully");
+  //       reset(); // Reset the form after successful submission
+  //     } catch (err) {
+  //       console.error("Failed to add course", err);
+  //     }
+  //   };
+  //   const onSubmit = async (data: TCourse) => {
+  //     try {
+  //       await addCourse({
+  //         ...data,
+  //         categories: data.categories.map(Number), // Ensure categories are numbers (just IDs)
+  //       }).unwrap();
+  //       toast.success("Course added successfully");
+  //       reset(); // Reset the form after successful submission
+  //     } catch (err) {
+  //       console.error("Failed to add course", err);
+  //       toast.error(
+  //         "Failed to add course: " + (err.data?.message || "An error occurred")
+  //       );
+  //     }
+  //   };
   const onSubmit = async (data: TCourse) => {
     try {
-      await addCourse(data).unwrap();
+      await addCourse({
+        ...data,
+        categories: data.categories.map(Number), // Ensure categories are numbers
+      }).unwrap();
+      toast.success("Course added successfully");
       reset(); // Reset the form after successful submission
     } catch (err) {
       console.error("Failed to add course", err);
+      toast.error(
+        "Failed to add course: " + (err.data?.message || "An error occurred")
+      );
     }
+  };
+
+  // Custom validation for price
+  const validatePrice = (value: number) => {
+    if (value < 0) {
+      return "Price cannot be negative"; // Custom error message
+    }
+    return true; // Validation passed
   };
 
   if (categoriesLoading) return <p>Loading Categories...</p>;
@@ -96,27 +150,67 @@ const AddCourse = () => {
           )}
         </div>
 
-        {/* Category Selection */}
+        {/* Price Field */}
         <div>
           <label className="block text-gray-700 font-semibold mb-2">
-            Category
+            Price
           </label>
+          <input
+            type="number"
+            className={`w-full p-2 border rounded-lg ${
+              errors.price ? "border-red-500" : "border-gray-300"
+            }`}
+            {...register("price", {
+              required: "Price is required",
+              validate: validatePrice, // Add custom validation here
+            })}
+          />
+          {errors.price && (
+            <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
+          )}
+        </div>
+
+        {/* Category Selection (Multi-Select) */}
+        <div>
+          <label className="block text-gray-700 font-semibold mb-2">
+            Categories
+          </label>
+          {/* <select
+            className={`w-full p-2 border rounded-lg ${
+              errors.categories ? "border-red-500" : "border-gray-300"
+            }`}
+            multiple // Enable multiple category selection
+            {...register("categories", {
+              required: "At least one category is required",
+            })}
+          >
+            {categories?.data?.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.category}
+              </option>
+            ))}
+          </select> */}
           <select
             className={`w-full p-2 border rounded-lg ${
-              errors.category ? "border-red-500" : "border-gray-300"
+              errors.categories ? "border-red-500" : "border-gray-300"
             }`}
-            {...register("category", { required: "Category is required" })}
+            multiple
+            {...register("categories", {
+              required: "At least one category is required",
+              validate: (value) =>
+                value.length > 0 || "At least one category is required", // Ensure at least one category is selected
+            })}
           >
-            <option value="">Select a category</option>
             {categories?.data?.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.category}
               </option>
             ))}
           </select>
-          {errors.category && (
+
+          {errors.categories && (
             <p className="text-red-500 text-sm mt-1">
-              {errors.category.message}
+              {errors.categories.message}
             </p>
           )}
         </div>
@@ -133,19 +227,32 @@ const AddCourse = () => {
         </button>
       </form>
 
-      {/* Success Message */}
-      {isSuccess && (
-        <p className="text-green-500 mt-4 text-center">
-          Course added successfully!
-        </p>
-      )}
-
       {/* Error Message */}
       {isError && error && (
         <p className="text-red-500 mt-4 text-center">
           {error.data?.message || "An error occurred while adding the course."}
         </p>
       )}
+
+      <div className="overflow-x-auto mt-10">
+        <table className="min-w-full  border ">
+          <thead>
+            <tr className=" uppercase text-sm leading-normal">
+              <th className="py-3 px-6 text-left">Title</th>
+              <th className="py-3 px-6 text-left">Description</th>
+              <th className="py-3 px-6 text-left">Price</th>
+              <th className="py-3 px-6 text-left">Categories</th>
+              <th className="py-3 px-6 text-left">Update</th>
+              <th className="py-3 px-6 text-left">Delete</th>
+            </tr>
+          </thead>
+          <tbody className=" text-sm font-semibold">
+            {courseData?.data?.map((course: TCourse) => (
+              <CourseTable course={course} />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

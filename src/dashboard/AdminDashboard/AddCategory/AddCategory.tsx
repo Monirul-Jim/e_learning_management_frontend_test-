@@ -4,9 +4,8 @@ import {
   useDeleteCategoryMutation,
   useGetCategoriesQuery,
 } from "../../../redux/api/categoryApi";
-import { useState } from "react";
 
-type TCategory = {
+export type TCategory = {
   category: string;
   id: number;
 };

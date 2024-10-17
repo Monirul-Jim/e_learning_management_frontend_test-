@@ -5,6 +5,7 @@ import SignUp from "../Authectication/SignUp";
 import MainDashboard from "../dashboard/MainDashboard";
 import AddCourse from "../dashboard/AdminDashboard/AddCourse/AddCourse";
 import AddCategory from "../dashboard/AdminDashboard/AddCategory/AddCategory";
+import UpdateCourse from "../dashboard/AdminDashboard/UpdateCourse/UpdateCourse";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "add-category",
         element: <AddCategory />,
+      },
+      {
+        path: "update-course/:id",
+        element: <UpdateCourse />,
       },
     ],
   },
