@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import {
   useAddCategoryMutation,
-  useDeleteCategoryMutation,
   useGetCategoriesQuery,
 } from "../../../redux/api/categoryApi";
 
@@ -26,8 +25,8 @@ const AddCategory = () => {
     error: categoryError,
   } = useGetCategoriesQuery(null);
 
-  const [deleteCategory, { isLoading: deleteLoading }] =
-    useDeleteCategoryMutation();
+  // const [deleteCategory, { isLoading: deleteLoading }] =
+  //   useDeleteCategoryMutation();
 
   const onSubmit = async (data: TCategory) => {
     try {
@@ -40,13 +39,13 @@ const AddCategory = () => {
   if (categoryLoading) return <p>Loading Categories...</p>;
   if (categoryError) return <p>Error loading categories</p>;
 
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteCategory(id).unwrap();
-    } catch (error) {
-      console.error("Failed to delete category", error);
-    }
-  };
+  // const handleDelete = async (id: number) => {
+  //   try {
+  //     await deleteCategory(id).unwrap();
+  //   } catch (error) {
+  //     console.error("Failed to delete category", error);
+  //   }
+  // };
 
   return (
     <div className="mx-auto mt-10 bg-white p-6 rounded-lg shadow-lg">
@@ -107,7 +106,7 @@ const AddCategory = () => {
               className="flex justify-between items-center p-2 border-b border-gray-200"
             >
               <span className="text-gray-800">{category.category}</span>
-              <button
+              {/* <button
                 onClick={() => handleDelete(category.id)}
                 className={`ml-4  bg-red-600 text-white p-1 rounded-lg transition-colors ${
                   deleteLoading ? "opacity-50" : ""
@@ -115,7 +114,7 @@ const AddCategory = () => {
                 disabled={deleteLoading}
               >
                 {deleteLoading ? "Deleting..." : "Delete"}
-              </button>
+              </button> */}
             </li>
           ))}
         </ul>

@@ -1,11 +1,12 @@
 import { toast } from "react-toastify";
-import { useDeleteCategoryMutation } from "../../../redux/api/categoryApi";
+import { useDeleteCourseMutation } from "../../../redux/api/courseApi";
 
 const CourseTable = ({ course }) => {
-  const [deleteCategory] = useDeleteCategoryMutation();
+  // const [deleteCategory] = useDeleteCategoryMutation();
+  const [deleteCourse] = useDeleteCourseMutation();
   const handleCourseDelete = async (id: number) => {
     try {
-      await deleteCategory(id).unwrap();
+      await deleteCourse(id).unwrap();
       toast.success("Successfully delete course");
     } catch (err) {
       console.error(err);

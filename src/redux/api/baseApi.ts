@@ -6,6 +6,6 @@ export const baseApi = createApi({
     baseUrl: "http://127.0.0.1:8000",
     credentials: "include",
   }),
-  tagTypes: ["category", "course"],
+  tagTypes: ["category", "course", "payment"],
   endpoints: () => ({}),
 });

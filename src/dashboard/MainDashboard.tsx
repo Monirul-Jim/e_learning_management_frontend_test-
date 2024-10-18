@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { useAppSelector } from "../redux/feature/hooks";
+import { RootState } from "../redux/feature/store";
+import SuperUserDashboard from "./AdminDashboard/SuperUserDashboard/SuperUserDashboard";
+import StudentDashBoard from "./StudentDashboard/StudentDashboard/StudentDashBoard";
 
 const MainDashboard = () => {
+  const user = useAppSelector((state: RootState) => state.auth.user);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -12,7 +17,7 @@ const MainDashboard = () => {
     <div className="grid grid-cols-1 lg:grid-cols-4 h-screen">
       <div className="hidden lg:block lg:col-span-1 h-full bg-white shadow-lg p-4">
         <h2 className="text-xl font-semibold mb-4">Menu</h2>
-        <ul className="space-y-4">
+        {/* <ul className="space-y-4">
           <li>
             <a
               href="/dashboard/add-course"
@@ -34,7 +39,16 @@ const MainDashboard = () => {
               Home
             </a>
           </li>
-        </ul>
+        </ul> */}
+        {user.is_superuser ? (
+          <>
+            <SuperUserDashboard />
+          </>
+        ) : (
+          <>
+            <StudentDashBoard />
+          </>
+        )}
       </div>
 
       <div className="lg:col-span-3 p-4 bg-gray-100">
@@ -56,24 +70,15 @@ const MainDashboard = () => {
         >
           <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">Drawer Menu</h2>
-            <ul className="space-y-4">
-              <li>
-                <a
-                  href="/dashboard/add-course"
-                  className="text-gray-800 hover:text-blue-500"
-                >
-                  Add Course
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/dashboard/add-category"
-                  className="text-gray-800 hover:text-blue-500"
-                >
-                  Category
-                </a>
-              </li>
-            </ul>
+            {user.is_superuser ? (
+              <>
+                <SuperUserDashboard />
+              </>
+            ) : (
+              <>
+                <StudentDashBoard />
+              </>
+            )}
           </div>
           <button
             onClick={toggleDrawer}
