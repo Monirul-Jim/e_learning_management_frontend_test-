@@ -76,7 +76,7 @@ const CourseSection = () => {
           (category) => category.slug === selectedSlug
         )
       )
-    : courseData.data;
+    : courseData?.data;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-10">
@@ -85,7 +85,7 @@ const CourseSection = () => {
           Course Categories
         </h1>
         <ul className="space-y-4">
-          {categoryData.data.map((category) => (
+          {categoryData?.data?.map((category) => (
             <li key={category.id}>
               <button
                 className="bg-blue-100 text-blue-700 px-4 py-2 rounded-md shadow-sm hover:bg-blue-200 transition duration-200"
@@ -103,8 +103,8 @@ const CourseSection = () => {
           Available Courses
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCourses.length > 0 ? (
-            filteredCourses.map((course) => (
+          {filteredCourses?.length > 0 ? (
+            filteredCourses?.map((course) => (
               <CourseCard key={course.id} course={course} />
             ))
           ) : (

@@ -55,21 +55,49 @@
 // export default Cart;
 
 import { useAppSelector, useAppDispatch } from "../redux/feature/hooks";
-import { removeFromCart } from "../redux/feature/cartSlice";
+import { clearCart, removeFromCart } from "../redux/feature/cartSlice";
 import { RootState } from "../redux/feature/store";
+import { usePurchaseOrderMutation } from "../redux/api/paymentApi";
 const Cart = () => {
   const cartItems = useAppSelector((state: RootState) => state.cart.items);
   const dispatch = useAppDispatch();
+  const [purchaseOrder, { isLoading, isSuccess, isError }] =
+    usePurchaseOrderMutation();
+
   const handleRemoveItem = (id: number) => {
     dispatch(removeFromCart(id));
   };
 
-  // Calculate total amount
   const totalAmount = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
+  // const orderData = {
+  //   cartItems,
+  //   totalAmount,
+  // };
+  // const handlePurchase = () => {
+  //   console.log(orderData);
 
+  //   purchaseOrder(orderData);
+  // };
+  const orderData = {
+    line_items: cartItems.map((item) => ({
+      price: item.price, // Ensure cart items have price_id from Stripe
+      quantity: item.quantity,
+    })),
+    totalAmount,
+  };
+
+  const handlePurchase = async () => {
+    try {
+      const response = await purchaseOrder(orderData).unwrap(); // Unwrap to handle the response
+      dispatch(clearCart());
+      window.location.href = response.url; // Redirect to Stripe checkout
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+    }
+  };
   return (
     <div className="container h-screen mx-auto mt-8">
       <h2 className="text-2xl font-semibold mb-4">Your Cart</h2>
@@ -105,7 +133,6 @@ const Cart = () => {
                 </td>
               </tr>
             ))}
-            {/* Footer row for the total amount */}
             <tr>
               <td
                 colSpan={3}
@@ -117,6 +144,17 @@ const Cart = () => {
                 ${totalAmount.toFixed(2)}
               </td>
               <td className="border-b"></td>
+              <td>
+                <button
+                  onClick={handlePurchase}
+                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Processing..." : "Purchase"}
+                </button>
+                {isSuccess && <p>Redirecting to payment...</p>}
+                {isError && <p>Error processing payment. Try again.</p>}
+              </td>
             </tr>
           </tbody>
         </table>
