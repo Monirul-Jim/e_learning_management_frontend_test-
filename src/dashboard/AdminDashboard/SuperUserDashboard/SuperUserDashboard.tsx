@@ -62,6 +62,38 @@ const SuperUserDashboard = () => {
         </li>
         <li>
           <a
+            href="/dashboard/add-parent-module"
+            className={`text-gray-800 hover:text-blue-500 ${
+              location.pathname === "/dashboard/add-parent-module"
+                ? "font-bold"
+                : ""
+            }`}
+          >
+            Add Parent Module
+          </a>
+        </li>
+        <li>
+          <a
+            href="/dashboard/add-module"
+            className={`text-gray-800 hover:text-blue-500 ${
+              location.pathname === "/dashboard/add-module" ? "font-bold" : ""
+            }`}
+          >
+            Add Module
+          </a>
+        </li>
+        <li>
+          <a
+            href="/dashboard/add-video"
+            className={`text-gray-800 hover:text-blue-500 ${
+              location.pathname === "/dashboard/add-video" ? "font-bold" : ""
+            }`}
+          >
+            Add Video
+          </a>
+        </li>
+        <li>
+          <a
             href="/"
             className={`text-gray-800 hover:text-blue-500 ${
               location.pathname === "/" ? "font-bold" : ""

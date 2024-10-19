@@ -9,6 +9,9 @@ import UpdateCourse from "../dashboard/AdminDashboard/UpdateCourse/UpdateCourse"
 import Cart from "../Cart/Cart";
 import Home from "../Home/Home";
 import StudentViewCourse from "../dashboard/StudentDashboard/StudentViewCourse/StudentViewCourse";
+import AddParentModule from "../dashboard/AdminDashboard/AddParentModule/AddParentModule";
+import AddModule from "../dashboard/AdminDashboard/AddModule/AddModule";
+import AddVideo from "../dashboard/AdminDashboard/AddVideo/AddVideo";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +59,18 @@ const router = createBrowserRouter([
       {
         path: "view-courses",
         element: <StudentViewCourse />,
+      },
+      {
+        path: "add-parent-module",
+        element: <AddParentModule />,
+      },
+      {
+        path: "add-module",
+        element: <AddModule />,
+      },
+      {
+        path: "add-video",
+        element: <AddVideo />,
       },
     ],
   },
