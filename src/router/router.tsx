@@ -8,6 +8,7 @@ import AddCategory from "../dashboard/AdminDashboard/AddCategory/AddCategory";
 import UpdateCourse from "../dashboard/AdminDashboard/UpdateCourse/UpdateCourse";
 import Cart from "../Cart/Cart";
 import Home from "../Home/Home";
+import StudentViewCourse from "../dashboard/StudentDashboard/StudentViewCourse/StudentViewCourse";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "update-course/:id",
         element: <UpdateCourse />,
+      },
+      {
+        path: "view-courses",
+        element: <StudentViewCourse />,
       },
     ],
   },

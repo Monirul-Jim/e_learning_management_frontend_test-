@@ -6,7 +6,7 @@ const StudentDashBoard = () => {
       <ul>
         <li>
           <a
-            href="/user/view-courses"
+            href="/dashboard/view-courses"
             className="text-gray-800 hover:text-blue-500"
           >
             View Courses

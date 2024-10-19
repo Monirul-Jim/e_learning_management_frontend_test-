@@ -60,6 +60,7 @@ import { RootState } from "../redux/feature/store";
 import { usePurchaseOrderMutation } from "../redux/api/paymentApi";
 const Cart = () => {
   const cartItems = useAppSelector((state: RootState) => state.cart.items);
+  const user = useAppSelector((state: RootState) => state.auth.user);
   const dispatch = useAppDispatch();
   const [purchaseOrder, { isLoading, isSuccess, isError }] =
     usePurchaseOrderMutation();
@@ -72,32 +73,52 @@ const Cart = () => {
     (total, item) => total + item.price * item.quantity,
     0
   );
-  // const orderData = {
-  //   cartItems,
-  //   totalAmount,
-  // };
-  // const handlePurchase = () => {
-  //   console.log(orderData);
-
-  //   purchaseOrder(orderData);
-  // };
-  const orderData = {
-    line_items: cartItems.map((item) => ({
-      price: item.price, // Ensure cart items have price_id from Stripe
-      quantity: item.quantity,
-    })),
-    totalAmount,
-  };
 
   const handlePurchase = async () => {
     try {
-      const response = await purchaseOrder(orderData).unwrap(); // Unwrap to handle the response
+      const userData = {
+        email: user.email, // Replace with actual user email
+        first_name: user.first_name, // Replace with actual user first name
+        last_name: user.last_name, // Replace with actual user last name
+      };
+
+      const orderData = {
+        userData,
+        courses: cartItems.map((item) => ({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        totalAmount,
+      };
+
+      const response = await purchaseOrder(orderData).unwrap();
+      window.location.href = response.url;
       dispatch(clearCart());
-      window.location.href = response.url; // Redirect to Stripe checkout
     } catch (error) {
       console.error("Error creating checkout session:", error);
     }
   };
+
+  // const orderData = {
+  //   line_items: cartItems.map((item) => ({
+  //     price: item.price, // Ensure cart items have price_id from Stripe
+  //     quantity: item.quantity,
+  //   })),
+  //   totalAmount,
+  // };
+
+  // const handlePurchase = async () => {
+  //   try {
+  //     const response = await purchaseOrder(orderData).unwrap();
+  //     window.location.href = response.url;
+  //     dispatch(clearCart());
+  //   } catch (error) {
+  //     console.error("Error creating checkout session:", error);
+  //   }
+  // };
   return (
     <div className="container h-screen mx-auto mt-8">
       <h2 className="text-2xl font-semibold mb-4">Your Cart</h2>
