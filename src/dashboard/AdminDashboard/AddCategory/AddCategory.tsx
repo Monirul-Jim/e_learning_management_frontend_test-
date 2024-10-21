@@ -105,7 +105,7 @@ const AddCategory = () => {
               key={category.id}
               className="flex justify-between items-center p-2 border-b border-gray-200"
             >
-              <span className="text-gray-800">{category.category}</span>
+              <span className="text-gray-800">{category?.category}</span>
               {/* <button
                 onClick={() => handleDelete(category.id)}
                 className={`ml-4  bg-red-600 text-white p-1 rounded-lg transition-colors ${

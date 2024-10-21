@@ -33,23 +33,26 @@ const courseApi = baseApi.injectEndpoints({
       invalidatesTags: ["course"],
     }),
     addParentModule: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: "/learning/parent-modules/",
         method: "POST",
+        body: data,
       }),
       invalidatesTags: ["course"],
     }),
     addVideos: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: "/learning/videos/",
         method: "POST",
+        body: data,
       }),
       invalidatesTags: ["course"],
     }),
     addModules: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: "/learning/modules/",
         method: "POST",
+        body: data,
       }),
       invalidatesTags: ["course"],
     }),
@@ -67,6 +70,14 @@ const courseApi = baseApi.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+    getSingleVideo: builder.query({
+      query: (id) => ({
+        url: `/learning/videos/${id}/`,
+        method: "GET",
+      }),
+      providesTags: ["course"],
+    }),
+
     getModules: builder.query({
       query: () => ({
         url: "/learning/modules/",
@@ -88,4 +99,5 @@ export const {
   useGetParentModulesQuery,
   useGetVideosQuery,
   useGetModulesQuery,
+  useGetSingleVideoQuery,
 } = courseApi;

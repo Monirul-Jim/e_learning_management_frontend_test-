@@ -2,8 +2,10 @@ import { useForm } from "react-hook-form";
 import {
   useAddModulesMutation,
   useGetCoursesQuery,
+  useGetModulesQuery,
   useGetParentModulesQuery,
 } from "../../../redux/api/courseApi";
+import { toast } from "react-toastify";
 
 const AddModule = () => {
   const {
@@ -11,27 +13,65 @@ const AddModule = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [addModule, { isLoading }] = useAddModulesMutation();
-  // Fetch courses and parent modules
+  const [addModules, { isLoading }] = useAddModulesMutation();
   const { data: coursesData, isLoading: loadingCourses } =
     useGetCoursesQuery(null);
   const { data: parentModulesData, isLoading: loadingParentModules } =
     useGetParentModulesQuery(null);
+  const {
+    data: modulesData,
+    isLoading: modulesLoading,
+    error: moduleError,
+  } = useGetModulesQuery(null);
   const onSubmit = async (data) => {
-    console.log(data);
+    const selectedCourse = coursesData?.data?.find(
+      (course) => course.id === Number(data.course)
+    );
+
+    if (!selectedCourse) {
+      alert("Course not found");
+      return;
+    }
+    let selectedParentModule = null;
+    if (data.parent_module) {
+      selectedParentModule = parentModulesData?.data?.find(
+        (module) => module.id === Number(data.parent_module)
+      );
+
+      if (!selectedParentModule) {
+        alert("Parent module not found");
+        return;
+      }
+    }
+    const payload = {
+      course: selectedCourse.id,
+      parent_module: selectedParentModule.id,
+      title: data.title,
+      description: data.description || "",
+    };
+
     try {
-      await addModule({
-        title: data.title,
-        description: data.description,
-        parent_module: data.parent_module,
-        course: data.course,
-      }).unwrap();
-      alert("Module added successfully");
-    } catch (error) {
-      console.error("Failed to add module:", error);
+      await addModules(payload).unwrap();
+      toast.success("Module added successfully");
+    } catch (err) {
+      console.error("Failed to add module:", err);
+      toast.error(
+        "Failed to add module: " + (err.data?.message || "Unknown error")
+      );
     }
   };
 
+  if (modulesLoading) {
+    return <p>Loading modules...</p>;
+  }
+
+  if (moduleError) {
+    return (
+      <p>
+        Error loading modules: {moduleError.message || "Something went wrong"}
+      </p>
+    );
+  }
   return (
     <div className="mx-auto">
       <form
@@ -106,13 +146,49 @@ const AddModule = () => {
         <div className="flex items-center justify-between">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             disabled={isLoading}
           >
             {isLoading ? "Adding..." : "Add Module"}
           </button>
         </div>
       </form>
+      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+        Modules List
+      </h2>
+
+      {modulesData && modulesData.data && (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4">Modules List</h2>
+          <ul className="list-none pl-0">
+            {modulesData.data.map((module) => (
+              <li
+                key={module.id}
+                className="mb-2 py-2 bg-blue-400  m-4 px-4 rounded-lg shadow-lg"
+              >
+                <h3 className="text-lg font-semibold">{module.title}</h3>
+                <p className="text-sm">
+                  Description:{" "}
+                  {module.description || "No description available"}
+                </p>
+                <p className="text-sm">
+                  Course: {module.course || "No course associated"}
+                </p>
+                {module.parent_module && (
+                  <p className="text-sm">
+                    Parent Module: {module?.parent_module}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Handle case where no modules exist */}
+      {!modulesLoading && modulesData?.data?.length === 0 && (
+        <p className="text-center text-gray-500">No modules available.</p>
+      )}
     </div>
   );
 };

@@ -42,22 +42,22 @@ const SuperUserDashboard = () => {
       <ul>
         <li>
           <a
-            href="/dashboard/add-course"
-            className={`text-gray-800 hover:text-blue-500 ${
-              location.pathname === "/dashboard/add-course" ? "font-bold" : ""
-            }`}
-          >
-            Add Course
-          </a>
-        </li>
-        <li>
-          <a
             href="/dashboard/add-category"
             className={`text-gray-800 hover:text-blue-500 ${
               location.pathname === "/dashboard/add-category" ? "font-bold" : ""
             }`}
           >
             Add Category
+          </a>
+        </li>
+        <li>
+          <a
+            href="/dashboard/add-course"
+            className={`text-gray-800 hover:text-blue-500 ${
+              location.pathname === "/dashboard/add-course" ? "font-bold" : ""
+            }`}
+          >
+            Add Course
           </a>
         </li>
         <li>

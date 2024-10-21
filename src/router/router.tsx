@@ -12,6 +12,7 @@ import StudentViewCourse from "../dashboard/StudentDashboard/StudentViewCourse/S
 import AddParentModule from "../dashboard/AdminDashboard/AddParentModule/AddParentModule";
 import AddModule from "../dashboard/AdminDashboard/AddModule/AddModule";
 import AddVideo from "../dashboard/AdminDashboard/AddVideo/AddVideo";
+import SeeClass from "../dashboard/StudentDashboard/SeeClass/SeeClass";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "add-video",
         element: <AddVideo />,
+      },
+      {
+        path: "see-class/:id",
+        element: <SeeClass />,
       },
     ],
   },

@@ -1,5 +1,9 @@
 import { useForm } from "react-hook-form";
-import { useAddVideosMutation } from "../../../redux/api/courseApi";
+import {
+  useAddVideosMutation,
+  useGetModulesQuery,
+} from "../../../redux/api/courseApi";
+import { toast } from "react-toastify";
 
 const AddVideo = () => {
   const {
@@ -9,7 +13,11 @@ const AddVideo = () => {
     reset,
   } = useForm();
   const [addVideo, { isLoading }] = useAddVideosMutation();
-
+  const {
+    data: moduleData,
+    isLoading: moduleLoading,
+    error: moduleError,
+  } = useGetModulesQuery(null);
   // Form submission handler
   const onSubmit = async (data) => {
     try {
@@ -22,13 +30,13 @@ const AddVideo = () => {
       }).unwrap();
 
       // Display success alert
-      alert("Video added successfully");
+      toast.success("Video added successfully");
 
       // Reset the form
       reset();
     } catch (error) {
       console.error("Failed to add video:", error);
-      alert("Failed to add video. Please try again.");
+      toast.error("Failed to add video. Please try again.");
     }
   };
 
@@ -39,7 +47,29 @@ const AddVideo = () => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
         <h2 className="text-xl font-bold mb-4">Add New Video</h2>
-
+        {/* Module ID Input */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Select Module
+          </label>
+          <select
+            {...register("module")}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          >
+            <option value="">Select a module...</option>
+            {!moduleLoading &&
+              moduleData?.data?.map((module) => (
+                <option key={module.id} value={module.id}>
+                  {module.title}
+                </option>
+              ))}
+          </select>
+          {errors.module && (
+            <p className="text-red-500 text-xs italic">
+              {errors.module.message}
+            </p>
+          )}
+        </div>
         {/* Video Title Input */}
         <div className="mb-4">
           <label
@@ -106,7 +136,8 @@ const AddVideo = () => {
             {...register("duration", {
               required: "Duration is required",
               pattern: {
-                value: /^([0-9]{2}):([0-9]{2}):([0-9]{2})$/,
+                // Updated regex for both one and two-digit hours
+                value: /^([0-9]{1,2}):([0-9]{2}):([0-9]{2})$/,
                 message: "Duration must be in format HH:MM:SS",
               },
             })}
@@ -117,29 +148,6 @@ const AddVideo = () => {
           {errors.duration && (
             <p className="text-red-500 text-xs italic">
               {errors.duration.message}
-            </p>
-          )}
-        </div>
-
-        {/* Module ID Input */}
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="module"
-          >
-            Module ID
-          </label>
-          <input
-            id="module"
-            type="number"
-            {...register("module", { required: "Module ID is required" })}
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.module ? "border-red-500" : ""
-            }`}
-          />
-          {errors.module && (
-            <p className="text-red-500 text-xs italic">
-              {errors.module.message}
             </p>
           )}
         </div>
