@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useRegisterUserMutation } from "../redux/api/authApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export type TUser = {
   first_name: string;
@@ -20,6 +21,7 @@ const SignUp = () => {
     setError, // Added to set specific field errors
     watch,
   } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [registerUser, { isLoading, isError, error }] =
     useRegisterUserMutation();
@@ -139,7 +141,7 @@ const SignUp = () => {
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password", { required: "Password is required" })}
               className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Enter password"
@@ -156,7 +158,7 @@ const SignUp = () => {
               Confirm Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password1", {
                 required: "Confirm your password",
                 validate: (value) =>
@@ -170,6 +172,20 @@ const SignUp = () => {
                 {errors.password1.message}
               </p>
             )}
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              id="showPassword"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)} // Toggle showPassword state
+            />
+            <label
+              htmlFor="showPassword"
+              className="ml-2 text-sm text-gray-700"
+            >
+              Show Password
+            </label>
           </div>
 
           <button

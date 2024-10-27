@@ -71,8 +71,9 @@ const courseApi = baseApi.injectEndpoints({
       providesTags: ["course"],
     }),
     getSingleVideo: builder.query({
-      query: (id) => ({
-        url: `/learning/videos/${id}/`,
+      query: (courseId) => ({
+        // url: `/learning/videos/${id}/`,
+        url: `/learning/videos/course/${courseId}/`,
         method: "GET",
       }),
       providesTags: ["course"],

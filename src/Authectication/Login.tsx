@@ -6,6 +6,7 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import verifyToken from "../redux/api/verifyToken";
 import { useAppDispatch } from "../redux/feature/hooks";
 import { setUser } from "../redux/feature/authSlice";
+import { useState } from "react";
 
 type ErrorResponse = {
   email?: string;
@@ -19,6 +20,7 @@ const Login = () => {
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -74,13 +76,12 @@ const Login = () => {
               </p>
             )}
           </div>
-
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-700">
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password", { required: "Password is required" })}
               className="w-full p-2 border border-gray-300 rounded-md"
               placeholder="Enter password"
@@ -91,7 +92,20 @@ const Login = () => {
               </p>
             )}
           </div>
-
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              id="showPassword"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)} // Toggle showPassword state
+            />
+            <label
+              htmlFor="showPassword"
+              className="ml-2 text-sm text-gray-700"
+            >
+              Show Password
+            </label>
+          </div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
