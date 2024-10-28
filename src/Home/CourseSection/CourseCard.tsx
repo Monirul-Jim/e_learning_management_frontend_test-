@@ -76,10 +76,12 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/feature/hooks"; // Import useAppSelector
 import { addToCart } from "../../redux/feature/cartSlice";
 import { toast } from "react-toastify";
+import { RootState } from "../../redux/feature/store";
 
 const CourseCard = ({ course }) => {
   const dispatch = useAppDispatch();
-  const cartItems = useAppSelector((state) => state.cart.items); // Get cart items from the Redux store
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const user = useAppSelector((state: RootState) => state.auth.user);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleDescription = () => {
@@ -144,13 +146,24 @@ const CourseCard = ({ course }) => {
             </span>
           ))}
         </div>
-
-        <button
-          onClick={handleAddCourse}
-          className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
-        >
-          Add to Cart
-        </button>
+        {user ? (
+          <>
+            {" "}
+            <button
+              onClick={handleAddCourse}
+              className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+            >
+              Add to Cart
+            </button>
+          </>
+        ) : (
+          <>
+            {" "}
+            <button className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+              <a href="/login"> Login</a>
+            </button>{" "}
+          </>
+        )}
       </div>
     </div>
   );

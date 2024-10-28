@@ -1,3 +1,175 @@
+// import { useGetSingleVideoQuery } from "../../../redux/api/courseApi";
+// import { useParams } from "react-router-dom";
+// import { useState, useEffect } from "react";
+// import SeeClassVideo from "./SeeClassVideo";
+
+// interface Video {
+//   id: number;
+//   title: string;
+//   video_url: string;
+//   module: {
+//     title: string;
+//     parent_module: {
+//       title: string;
+//     } | null;
+//   } | null;
+// }
+
+// const SeeClass: React.FC = () => {
+//   const { id } = useParams<{ id: string }>();
+//   const {
+//     data: videoData,
+//     isLoading,
+//     error,
+//   } = useGetSingleVideoQuery(id as string);
+//   console.log(videoData);
+
+//   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+//   const [collapsedParents, setCollapsedParents] = useState<{
+//     [key: string]: boolean;
+//   }>({});
+//   const [collapsedChildren, setCollapsedChildren] = useState<{
+//     [key: string]: boolean;
+//   }>({});
+
+//   useEffect(() => {
+//     if (videoData && videoData.data.length > 0) {
+//       setSelectedVideo(videoData.data[0]);
+//     }
+//   }, [videoData]);
+
+//   if (isLoading) return <p>Loading videos...</p>;
+//   if (error) return <p>Error loading videos</p>;
+//   if (!videoData || videoData.data.length === 0)
+//     return <p>No videos available</p>;
+
+//   // Group videos by parent and child modules
+//   const groupedVideos = videoData.data.reduce((acc, video) => {
+//     const parentTitle = video.module?.parent_module?.title || "Unknown Parent";
+//     const childTitle = video.module?.title || "Unknown Child";
+
+//     if (!acc[parentTitle]) acc[parentTitle] = {};
+//     if (!acc[parentTitle][childTitle]) acc[parentTitle][childTitle] = [];
+
+//     acc[parentTitle][childTitle].push(video);
+//     return acc;
+//   }, {} as { [parentTitle: string]: { [childTitle: string]: Video[] } });
+
+//   // Flatten grouped videos to navigate
+//   const flattenedVideos = Object.values(groupedVideos).flatMap((childModules) =>
+//     Object.values(childModules).flat()
+//   ) as Video[];
+
+//   const currentIndex = selectedVideo
+//     ? flattenedVideos.findIndex((v) => v.id === selectedVideo.id)
+//     : -1;
+//   const hasNext = currentIndex < flattenedVideos.length - 1;
+//   const hasPrev = currentIndex > 0;
+
+//   const handleNext = () => {
+//     if (hasNext) setSelectedVideo(flattenedVideos[currentIndex + 1]);
+//   };
+
+//   const handlePrev = () => {
+//     if (hasPrev) setSelectedVideo(flattenedVideos[currentIndex - 1]);
+//   };
+
+//   const toggleParentCollapse = (parentTitle: string) => {
+//     setCollapsedParents((prev) => ({
+//       ...prev,
+//       [parentTitle]: !prev[parentTitle],
+//     }));
+//   };
+
+//   const toggleChildCollapse = (childTitle: string) => {
+//     setCollapsedChildren((prev) => ({
+//       ...prev,
+//       [childTitle]: !prev[childTitle],
+//     }));
+//   };
+
+//   return (
+//     <div className="flex flex-col md:flex-row">
+//       <div className="flex-1">
+//         {selectedVideo && (
+//           <div className="space-y-4">
+//             <SeeClassVideo video={selectedVideo} />
+//             <div className="flex justify-end mt-4">
+//               <button
+//                 onClick={handlePrev}
+//                 disabled={!hasPrev}
+//                 className={`px-4 py-2 mr-4 rounded ${
+//                   !hasPrev
+//                     ? "opacity-50 cursor-not-allowed"
+//                     : "bg-blue-500 text-white"
+//                 }`}
+//               >
+//                 Previous
+//               </button>
+//               <button
+//                 onClick={handleNext}
+//                 disabled={!hasNext}
+//                 className={`px-4 py-2 rounded ${
+//                   !hasNext
+//                     ? "opacity-50 cursor-not-allowed"
+//                     : "bg-blue-500 text-white"
+//                 }`}
+//               >
+//                 Next
+//               </button>
+//             </div>
+//           </div>
+//         )}
+//       </div>
+
+//       <div className="flex-1 md:w-1/3 space-y-4 p-4">
+//         <h2 className="text-xl font-semibold mb-4">Video List</h2>
+//         <div className="max-h-96 overflow-y-auto border border-gray-300 rounded-md p-2">
+//           {" "}
+//           {Object.entries(groupedVideos).map(([parentTitle, childModules]) => (
+//             <div key={parentTitle} className="mb-4">
+//               <h3
+//                 onClick={() => toggleParentCollapse(parentTitle)}
+//                 className=" font-semibold text-gray-700 mb-2 cursor-pointer"
+//               >
+//                 {parentTitle} {collapsedParents[parentTitle] ? "▲" : "▼"}
+//               </h3>
+//               {!collapsedParents[parentTitle] &&
+//                 Object.entries(
+//                   childModules as { [childTitle: string]: Video[] }
+//                 ).map(([childTitle, videos]) => (
+//                   <div key={childTitle} className="ml-4 mb-2">
+//                     <h4
+//                       onClick={() => toggleChildCollapse(childTitle)}
+//                       className="font-semibold text-gray-600 mb-1 cursor-pointer"
+//                     >
+//                       {childTitle} {collapsedChildren[childTitle] ? "▲" : "▼"}
+//                     </h4>
+//                     {!collapsedChildren[childTitle] &&
+//                       videos.map((videoItem) => (
+//                         <p
+//                           key={videoItem.id}
+//                           onClick={() => setSelectedVideo(videoItem)}
+//                           className={`cursor-pointer bg-sky-500 text-white p-1 mt-2 rounded-lg ${
+//                             selectedVideo && selectedVideo.id === videoItem.id
+//                               ? "text-blue-500 font-bold"
+//                               : ""
+//                           }`}
+//                         >
+//                           {videoItem.title}
+//                         </p>
+//                       ))}
+//                   </div>
+//                 ))}
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SeeClass;
 import { useGetSingleVideoQuery } from "../../../redux/api/courseApi";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -7,25 +179,36 @@ interface Video {
   id: number;
   title: string;
   video_url: string;
-  module: {
+  duration: string;
+  module_details: {
     title: string;
-    parent_module: {
+    course_details: {
       title: string;
-    } | null;
-  } | null;
+      image: string;
+      description: string;
+      price: number;
+      category_details: {
+        id: number;
+        category: string;
+        slug: string;
+      }[];
+    };
+    parent_module_details: {
+      title: string;
+    };
+    description: string;
+  };
 }
 
-interface VideoData {
-  data: Video[];
-}
-
-const SeeClass = () => {
+const SeeClass: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const {
     data: videoData,
     isLoading,
     error,
   } = useGetSingleVideoQuery(id as string);
+  console.log(videoData);
+
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [collapsedParents, setCollapsedParents] = useState<{
     [key: string]: boolean;
@@ -45,9 +228,11 @@ const SeeClass = () => {
   if (!videoData || videoData.data.length === 0)
     return <p>No videos available</p>;
 
+  // Group videos by parent and child modules
   const groupedVideos = videoData.data.reduce((acc, video) => {
-    const parentTitle = video.module?.parent_module?.title || "Unknown Parent";
-    const childTitle = video.module?.title || "Unknown Child";
+    const parentTitle =
+      video.module_details.parent_module_details.title || "Unknown Parent";
+    const childTitle = video.module_details.title || "Unknown Child";
 
     if (!acc[parentTitle]) acc[parentTitle] = {};
     if (!acc[parentTitle][childTitle]) acc[parentTitle][childTitle] = [];
@@ -55,6 +240,25 @@ const SeeClass = () => {
     acc[parentTitle][childTitle].push(video);
     return acc;
   }, {} as { [parentTitle: string]: { [childTitle: string]: Video[] } });
+
+  // Flatten grouped videos to navigate
+  const flattenedVideos = Object.values(groupedVideos).flatMap((childModules) =>
+    Object.values(childModules).flat()
+  ) as Video[];
+
+  const currentIndex = selectedVideo
+    ? flattenedVideos.findIndex((v) => v.id === selectedVideo.id)
+    : -1;
+  const hasNext = currentIndex < flattenedVideos.length - 1;
+  const hasPrev = currentIndex > 0;
+
+  const handleNext = () => {
+    if (hasNext) setSelectedVideo(flattenedVideos[currentIndex + 1]);
+  };
+
+  const handlePrev = () => {
+    if (hasPrev) setSelectedVideo(flattenedVideos[currentIndex - 1]);
+  };
 
   const toggleParentCollapse = (parentTitle: string) => {
     setCollapsedParents((prev) => ({
@@ -73,46 +277,78 @@ const SeeClass = () => {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-1">
-        {selectedVideo && <SeeClassVideo video={selectedVideo} />}
+        {selectedVideo && (
+          <div className="space-y-4">
+            <SeeClassVideo video={selectedVideo} />
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={handlePrev}
+                disabled={!hasPrev}
+                className={`px-4 py-2 mr-4 rounded ${
+                  !hasPrev
+                    ? "opacity-50 cursor-not-allowed"
+                    : "bg-blue-500 text-white"
+                }`}
+              >
+                Previous
+              </button>
+              <button
+                onClick={handleNext}
+                disabled={!hasNext}
+                className={`px-4 py-2 rounded ${
+                  !hasNext
+                    ? "opacity-50 cursor-not-allowed"
+                    : "bg-blue-500 text-white"
+                }`}
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex-1 md:w-1/3 space-y-4 p-4">
         <h2 className="text-xl font-semibold mb-4">Video List</h2>
-        {Object.entries(groupedVideos).map(([parentTitle, childModules]) => (
-          <div key={parentTitle} className="mb-4">
-            <h3
-              onClick={() => toggleParentCollapse(parentTitle)}
-              className="text-lg font-semibold text-gray-700 mb-2 cursor-pointer"
-            >
-              {parentTitle} {collapsedParents[parentTitle] ? "▲" : "▼"}
-            </h3>
-            {!collapsedParents[parentTitle] &&
-              Object.entries(childModules).map(([childTitle, videos]) => (
-                <div key={childTitle} className="ml-4 mb-2">
-                  <h4
-                    onClick={() => toggleChildCollapse(childTitle)}
-                    className="text-md font-semibold text-gray-600 mb-1 cursor-pointer"
-                  >
-                    {childTitle} {collapsedChildren[childTitle] ? "▲" : "▼"}
-                  </h4>
-                  {!collapsedChildren[childTitle] &&
-                    videos?.map((videoItem) => (
-                      <p
-                        key={videoItem.id}
-                        onClick={() => setSelectedVideo(videoItem)}
-                        className={`cursor-pointer bg-sky-500 text-white p-1 mt-2 rounded-lg ${
-                          selectedVideo && selectedVideo.id === videoItem.id
-                            ? "text-blue-500 font-bold"
-                            : ""
-                        }`}
-                      >
-                        {videoItem.title}
-                      </p>
-                    ))}
-                </div>
-              ))}
-          </div>
-        ))}
+        <div className="max-h-96 overflow-y-auto border border-gray-300 rounded-md p-2">
+          {Object.entries(groupedVideos).map(([parentTitle, childModules]) => (
+            <div key={parentTitle} className="mb-4">
+              <h3
+                onClick={() => toggleParentCollapse(parentTitle)}
+                className="font-semibold text-gray-700 mb-2 cursor-pointer"
+              >
+                {parentTitle} {collapsedParents[parentTitle] ? "▲" : "▼"}
+              </h3>
+              {!collapsedParents[parentTitle] &&
+                Object.entries(
+                  childModules as { [childTitle: string]: Video[] }
+                ).map(([childTitle, videos]) => (
+                  <div key={childTitle} className="ml-4 mb-2">
+                    <h4
+                      onClick={() => toggleChildCollapse(childTitle)}
+                      className="font-semibold text-gray-600 mb-1 cursor-pointer"
+                    >
+                      {childTitle} {collapsedChildren[childTitle] ? "▲" : "▼"}
+                    </h4>
+                    {!collapsedChildren[childTitle] &&
+                      videos.map((videoItem) => (
+                        <p
+                          key={videoItem.id}
+                          onClick={() => setSelectedVideo(videoItem)}
+                          className={`cursor-pointer bg-sky-500 text-white p-1 mt-2 rounded-lg ${
+                            selectedVideo && selectedVideo.id === videoItem.id
+                              ? "text-blue-500 font-bold"
+                              : ""
+                          }`}
+                        >
+                          {videoItem?.title} - {videoItem?.duration}
+                        </p>
+                      ))}
+                  </div>
+                ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

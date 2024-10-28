@@ -21,12 +21,11 @@ const AddVideo = () => {
   // Form submission handler
   const onSubmit = async (data) => {
     try {
-      // Call the mutation to add a video
       await addVideo({
         title: data.title,
         video_url: data.video_url,
         duration: data.duration,
-        module: data.module, // Module ID
+        module: parseInt(data.module, 10), // Ensure module is an integer ID
       }).unwrap();
 
       // Display success alert
