@@ -2,37 +2,58 @@ import { useForm } from "react-hook-form";
 import {
   useAddParentModuleMutation,
   useGetParentModulesQuery,
+  useUpdateParentModulesMutation,
 } from "../../../redux/api/courseApi";
+import { useState } from "react";
+
+type ParentModuleData = {
+  id: number;
+  title: string;
+};
 
 const AddParentModule = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm();
-  const [addParentModule, { isLoading }] = useAddParentModuleMutation();
+  } = useForm<{ title: string }>();
+  const [selectedModule, setSelectedModule] = useState<ParentModuleData | null>(
+    null
+  );
+
+  const [addParentModule, { isLoading: adding }] = useAddParentModuleMutation();
+  const [updateParentModules, { isLoading: updating }] =
+    useUpdateParentModulesMutation();
   const {
-    data: parentModuleData, // Rename to avoid conflict with variable names
+    data: parentModuleData,
     isLoading: parentLoading,
     error: parentError,
   } = useGetParentModulesQuery(null);
 
-  console.log(parentModuleData); // Debug the fetched data
-
-  const onSubmit = async (data) => {
-    if (!data.title) {
-      console.error("Title field is empty");
-      return;
-    }
+  const onSubmit = async (data: { title: string }) => {
+    if (!data.title) return;
 
     try {
-      console.log("Form data:", data); // Log form data to inspect
-      const response = await addParentModule({ title: data.title }).unwrap();
-      console.log("Response:", response); // Log the response for debugging
-      alert("Parent Module added successfully");
+      if (selectedModule) {
+        await updateParentModules({
+          id: selectedModule.id,
+          title: data.title,
+        }).unwrap();
+        setSelectedModule(null);
+      } else {
+        await addParentModule({ title: data.title }).unwrap();
+      }
+      reset();
     } catch (error) {
-      console.error("Failed to add parent module:", error);
+      console.error("Failed to submit module:", error);
     }
+  };
+
+  const handleUpdateClick = (module: ParentModuleData) => {
+    console.log("Data being submitted:", selectedModule);
+    setSelectedModule(module);
+    reset({ title: module.title });
   };
 
   return (
@@ -43,7 +64,9 @@ const AddParentModule = () => {
       >
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Parent Module Title
+            {selectedModule
+              ? "Update Parent Module Title"
+              : "Parent Module Title"}
           </label>
           <input
             type="text"
@@ -63,15 +86,20 @@ const AddParentModule = () => {
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            disabled={isLoading}
+            disabled={adding || updating}
           >
-            {isLoading ? "Adding..." : "Add Parent Module"}
+            {adding || updating
+              ? selectedModule
+                ? "Updating..."
+                : "Adding..."
+              : selectedModule
+              ? "Update Parent Module"
+              : "Add Parent Module"}
           </button>
         </div>
       </form>
 
       {parentLoading && <p>Loading parent modules...</p>}
-
       {parentError && (
         <p>Failed to load parent modules: {parentError.message}</p>
       )}
@@ -80,12 +108,18 @@ const AddParentModule = () => {
         <div className="mt-8">
           <h2 className="text-xl font-bold mb-4">Parent Modules List</h2>
           <ul className="list-disc pl-5">
-            {parentModuleData.data.map((module) => (
+            {parentModuleData?.data?.map((module: ParentModuleData) => (
               <li
                 key={module.id}
                 className="mb-2 list-none py-1 bg-blue-400 m-4 px-4 rounded-lg"
               >
-                {module.title}
+                <span>{module.title}</span>
+                <button
+                  onClick={() => handleUpdateClick(module)}
+                  className=" ml-4 underline"
+                >
+                  Update
+                </button>
               </li>
             ))}
           </ul>

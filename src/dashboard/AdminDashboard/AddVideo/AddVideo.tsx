@@ -2,8 +2,49 @@ import { useForm } from "react-hook-form";
 import {
   useAddVideosMutation,
   useGetModulesQuery,
+  useGetVideosQuery,
 } from "../../../redux/api/courseApi";
 import { toast } from "react-toastify";
+// CategoryDetail type for course categories
+interface CategoryDetail {
+  id: number;
+  category: string;
+  slug: string;
+}
+
+// CourseDetail type for video course details
+interface CourseDetail {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
+  price: number;
+  category_details: CategoryDetail[];
+}
+
+// ParentModuleDetail type for parent module details
+interface ParentModuleDetail {
+  id: number;
+  title: string;
+}
+
+// ModuleDetail type for video module details
+interface ModuleDetail {
+  id: number;
+  title: string;
+  description: string;
+  course_details: CourseDetail;
+  parent_module_details?: ParentModuleDetail;
+}
+
+// Video type for the overall video structure
+export interface Video {
+  id: number;
+  title: string;
+  video_url: string;
+  duration: string;
+  module_details: ModuleDetail;
+}
 
 const AddVideo = () => {
   const {
@@ -13,11 +54,17 @@ const AddVideo = () => {
     reset,
   } = useForm();
   const [addVideo, { isLoading }] = useAddVideosMutation();
-  const {
-    data: moduleData,
-    isLoading: moduleLoading,
-    error: moduleError,
-  } = useGetModulesQuery(null);
+  const { data: moduleData, isLoading: moduleLoading } =
+    useGetModulesQuery(null);
+
+  const { data: videoData, isLoading: videoLoading } = useGetVideosQuery(null);
+  if (videoLoading) {
+    return <p>Loading videos...</p>;
+  }
+
+  if (!videoData || videoData.length === 0) {
+    return <p>No videos available.</p>;
+  }
   // Form submission handler
   const onSubmit = async (data) => {
     try {
@@ -164,6 +211,48 @@ const AddVideo = () => {
           </button>
         </div>
       </form>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white shadow-md rounded-lg">
+          <thead>
+            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+              <th className="py-3 px-6 text-left">Title</th>
+              <th className="py-3 px-6 text-left">Duration</th>
+              <th className="py-3 px-6 text-left">Module</th>
+              <th className="py-3 px-6 text-left">Course</th>
+              <th className="py-3 px-6 text-left">Video Link</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-700 text-sm font-light">
+            {videoData.map((video: Video) => (
+              <tr
+                key={video.id}
+                className="border-b border-gray-200 hover:bg-gray-100"
+              >
+                <td className="py-3 px-6 text-left font-medium">
+                  {video.title}
+                </td>
+                <td className="py-3 px-6 text-left">{video.duration}</td>
+                <td className="py-3 px-6 text-left">
+                  {video.module_details.title}
+                </td>
+                <td className="py-3 px-6 text-left">
+                  {video.module_details.course_details.title}
+                </td>
+                <td className="py-3 px-6 text-left">
+                  <a
+                    href={video.video_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    Watch Video
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

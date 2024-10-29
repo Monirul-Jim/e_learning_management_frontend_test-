@@ -1,8 +1,13 @@
-// Define types for the API response
 interface CategoryDetail {
   id: number;
   category: string;
   slug: string;
+}
+interface ModuleFormData {
+  course: number;
+  parent_module?: number;
+  title: string;
+  description?: string;
 }
 
 interface Course {
@@ -33,6 +38,7 @@ interface ModulesResponse {
   message: string;
   data: Module[];
 }
+
 import { useForm } from "react-hook-form";
 import {
   useAddModulesMutation,

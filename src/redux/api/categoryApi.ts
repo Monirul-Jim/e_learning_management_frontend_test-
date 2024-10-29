@@ -17,17 +17,18 @@ const categoryApi = baseApi.injectEndpoints({
       }),
       providesTags: ["category"],
     }),
-    // deleteCategory: builder.mutation({
-    //   query: (id) => ({
-    //     url: `/learning/category/${id}/`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: ["category"],
-    // }),
+    updateCategories: builder.mutation({
+      query: ({ id, category }) => ({
+        url: `/learning/category/${id}/`,
+        method: "PUT",
+        body: { category },
+      }),
+      invalidatesTags: ["category"],
+    }),
   }),
 });
 export const {
   useAddCategoryMutation,
   useGetCategoriesQuery,
-  // useDeleteCategoryMutation,
+  useUpdateCategoriesMutation,
 } = categoryApi;
