@@ -1,8 +1,26 @@
 import { toast } from "react-toastify";
 import { useDeleteCourseMutation } from "../../../redux/api/courseApi";
 import { useState } from "react";
+export type TCourse = {
+  image: string;
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  categories: number[];
+  category_details: Category[]; // Add this to ensure course has category_details
+};
 
-const CourseTable = ({ course }) => {
+type Category = {
+  id: number;
+  category: string;
+};
+
+interface CourseTableProps {
+  course: TCourse; // Define the type of the course prop
+}
+
+const CourseTable = ({ course }: CourseTableProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   // const [deleteCategory] = useDeleteCategoryMutation();
   const [deleteCourse] = useDeleteCourseMutation();

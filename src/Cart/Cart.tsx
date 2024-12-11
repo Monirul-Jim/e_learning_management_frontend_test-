@@ -77,9 +77,9 @@ const Cart = () => {
   const handlePurchase = async () => {
     try {
       const userData = {
-        email: user.email, // Replace with actual user email
-        first_name: user.first_name, // Replace with actual user first name
-        last_name: user.last_name, // Replace with actual user last name
+        email: user?.email, // Replace with actual user email
+        first_name: user?.first_name, // Replace with actual user first name
+        last_name: user?.last_name, // Replace with actual user last name
       };
 
       const orderData = {

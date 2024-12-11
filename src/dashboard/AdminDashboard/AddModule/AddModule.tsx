@@ -3,6 +3,7 @@ interface CategoryDetail {
   category: string;
   slug: string;
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ModuleFormData {
   course: number;
   parent_module?: number;
@@ -23,20 +24,37 @@ interface ParentModule {
   id: number;
   title: string;
 }
+interface CourseDetails {
+  id: number;
+  category_details: CategoryDetail[];
+  description: string;
+  image: string;
+  price: number;
+  title: string;
+}
 
-interface Module {
+export interface Module {
   id: number;
   course: Course;
   title: string;
+  course_details: CourseDetails;
   parent_module: ParentModule;
   description: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ModulesResponse {
   statusCode: number;
   success: boolean;
   message: string;
   data: Module[];
+}
+// Define the type for the form data
+interface FormData {
+  course: number; // ID of the selected course
+  parent_module?: number; // ID of the selected parent module (optional)
+  title: string; // Title of the module
+  description?: string; // Description of the module (optional)
 }
 
 import { useForm } from "react-hook-form";
@@ -54,21 +72,22 @@ const AddModule = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormData>();
 
   const [addModules, { isLoading }] = useAddModulesMutation();
   const { data: coursesData, isLoading: loadingCourses } =
-    useGetCoursesQuery<ModulesResponse>(null);
+    useGetCoursesQuery(null);
   const { data: parentModulesData, isLoading: loadingParentModules } =
-    useGetParentModulesQuery<ModulesResponse>(null);
+    useGetParentModulesQuery(null);
   const {
     data: modulesData,
     isLoading: modulesLoading,
     error: moduleError,
-  } = useGetModulesQuery<ModulesResponse>(null);
-  const onSubmit = async (data: any) => {
+  } = useGetModulesQuery(null);
+
+  const onSubmit = async (data: FormData) => {
     const selectedCourse = coursesData?.data?.find(
-      (course) => course.id === Number(data.course)
+      (course: Course) => course.id === Number(data.course)
     );
 
     if (!selectedCourse) {
@@ -79,7 +98,7 @@ const AddModule = () => {
     let selectedParentModule = null;
     if (data.parent_module) {
       selectedParentModule = parentModulesData?.data?.find(
-        (module) => module.id === Number(data.parent_module)
+        (module: ParentModule) => module.id === Number(data.parent_module)
       );
 
       if (!selectedParentModule) {
@@ -95,20 +114,17 @@ const AddModule = () => {
       title: data.title,
       description: data.description || "",
       categories: selectedCourse.category_details.map(
-        (category) => category.id
+        (category: CategoryDetail) => category.id
       ), // Only IDs for categories
     };
 
-    console.log("Payload:", payload); // Debugging
+
 
     try {
       await addModules(payload).unwrap();
       toast.success("Module added successfully");
     } catch (err) {
       console.error("Failed to add module:", err);
-      toast.error(
-        "Failed to add module: " + (err.data?.message || "Unknown error")
-      );
     }
   };
 
@@ -117,11 +133,7 @@ const AddModule = () => {
   }
 
   if (moduleError) {
-    return (
-      <p>
-        Error loading modules: {moduleError.message || "Something went wrong"}
-      </p>
-    );
+    return <p>Error loading modules</p>;
   }
 
   return (
@@ -143,7 +155,7 @@ const AddModule = () => {
           >
             <option value="">Select a course...</option>
             {!loadingCourses &&
-              coursesData?.data?.map((course) => (
+              coursesData?.data?.map((course: Course) => (
                 <option key={course.id} value={course.id}>
                   {course.title}
                 </option>
@@ -165,7 +177,7 @@ const AddModule = () => {
           >
             <option value="">Select a parent module...</option>
             {!loadingParentModules &&
-              parentModulesData?.data?.map((module) => (
+              parentModulesData?.data?.map((module: ParentModule) => (
                 <option key={module.id} value={module.id}>
                   {module.title}
                 </option>
@@ -222,7 +234,7 @@ const AddModule = () => {
         <div className="mt-8">
           <h2 className="text-xl font-bold mb-4">Modules List</h2>
           <ul className="list-none pl-0">
-            {modulesData?.data?.map((module) => (
+            {modulesData?.data?.map((module: Module) => (
               <AddModuleCard key={module.id} module={module} />
             ))}
           </ul>

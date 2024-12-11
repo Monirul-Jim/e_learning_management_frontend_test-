@@ -3,7 +3,7 @@ import {
   useAddCourseMutation,
   useGetCoursesQuery,
 } from "../../../redux/api/courseApi";
-import { useGetCategoriesQuery } from "../../../redux/api/categoryApi"; // To fetch categories
+import { useGetCategoriesQuery } from "../../../redux/api/categoryApi";
 import { toast } from "react-toastify";
 import CourseTable from "./CourseTable";
 
@@ -14,6 +14,11 @@ export type TCourse = {
   description: string;
   price: number;
   categories: number[];
+  category_details: Category[];
+};
+type Category = {
+  id: number;
+  category: string;
 };
 
 const AddCourse = () => {
@@ -24,12 +29,8 @@ const AddCourse = () => {
     reset,
   } = useForm<TCourse>();
 
-  const [addCourse, { isLoading, isError, error }] = useAddCourseMutation();
-  const {
-    data: courseData,
-    isLoading: courseLoading,
-    isError: courseError,
-  } = useGetCoursesQuery(null);
+  const [addCourse, { isLoading }] = useAddCourseMutation();
+  const { data: courseData } = useGetCoursesQuery(null);
 
   const {
     data: categories,
@@ -74,9 +75,6 @@ const AddCourse = () => {
       reset(); // Reset the form after successful submission
     } catch (err) {
       console.error("Failed to add course", err);
-      toast.error(
-        "Failed to add course: " + (err.data?.message || "An error occurred")
-      );
     }
   };
 
@@ -201,7 +199,7 @@ const AddCourse = () => {
                 value.length > 0 || "At least one category is required", // Ensure at least one category is selected
             })}
           >
-            {categories?.data?.map((category) => (
+            {categories?.data?.map((category: Category) => (
               <option key={category.id} value={category.id}>
                 {category.category}
               </option>
@@ -228,11 +226,11 @@ const AddCourse = () => {
       </form>
 
       {/* Error Message */}
-      {isError && error && (
+      {/* {isError && error && (
         <p className="text-red-500 mt-4 text-center">
-          {error.data?.message || "An error occurred while adding the course."}
+          {error?.data?.message || "An error occurred while adding the course."}
         </p>
-      )}
+      )} */}
 
       <div className="overflow-x-auto mt-10">
         <table className="min-w-full  border ">

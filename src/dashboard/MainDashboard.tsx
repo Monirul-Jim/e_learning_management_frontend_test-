@@ -16,31 +16,7 @@ const MainDashboard = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 h-screen">
       <div className="hidden lg:block lg:col-span-1 h-full bg-white shadow-lg p-4">
-        <h2 className="text-xl font-semibold mb-4">Menu</h2>
-        {/* <ul className="space-y-4">
-          <li>
-            <a
-              href="/dashboard/add-course"
-              className="text-gray-800 hover:text-blue-500"
-            >
-              Add Course
-            </a>
-          </li>
-          <li>
-            <a
-              href="/dashboard/add-category"
-              className="text-gray-800 hover:text-blue-500"
-            >
-              Category
-            </a>
-          </li>
-          <li>
-            <a href="/" className="text-gray-800 hover:text-blue-500">
-              Home
-            </a>
-          </li>
-        </ul> */}
-        {user.is_superuser ? (
+        {user?.is_superuser ? (
           <>
             <SuperUserDashboard />
           </>
@@ -52,6 +28,9 @@ const MainDashboard = () => {
       </div>
 
       <div className="lg:col-span-3 p-4 bg-gray-100">
+        {/* Render additional sections for admin or student */}
+
+        {/* Outlet renders nested routes */}
         <Outlet />
       </div>
       <div className="lg:hidden">
@@ -70,7 +49,7 @@ const MainDashboard = () => {
         >
           <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">Drawer Menu</h2>
-            {user.is_superuser ? (
+            {user?.is_superuser ? (
               <>
                 <SuperUserDashboard />
               </>

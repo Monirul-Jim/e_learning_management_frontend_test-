@@ -64,34 +64,22 @@ const Footer = () => {
                   </span>
                   <ul className="list-unstyled">
                     <li>
-                      <a
-                        className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://www.creative-tim.com/presentation?ref=njs-profile"
-                      >
+                      <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">
                         About Us
                       </a>
                     </li>
                     <li>
-                      <a
-                        className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://blog.creative-tim.com?ref=njs-profile"
-                      >
+                      <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">
                         Blog
                       </a>
                     </li>
                     <li>
-                      <a
-                        className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://www.github.com/creativetimofficial?ref=njs-profile"
-                      >
+                      <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">
                         Github
                       </a>
                     </li>
                     <li>
-                      <a
-                        className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://www.creative-tim.com/bootstrap-themes/free?ref=njs-profile"
-                      >
+                      <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">
                         Free Products
                       </a>
                     </li>
@@ -103,34 +91,22 @@ const Footer = () => {
                   </span>
                   <ul className="list-unstyled">
                     <li>
-                      <a
-                        className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://github.com/creativetimofficial/notus-js/blob/main/LICENSE.md?ref=njs-profile"
-                      >
+                      <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">
                         MIT License
                       </a>
                     </li>
                     <li>
-                      <a
-                        className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://creative-tim.com/terms?ref=njs-profile"
-                      >
+                      <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">
                         Terms &amp; Conditions
                       </a>
                     </li>
                     <li>
-                      <a
-                        className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://creative-tim.com/privacy?ref=njs-profile"
-                      >
+                      <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">
                         Privacy Policy
                       </a>
                     </li>
                     <li>
-                      <a
-                        className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://creative-tim.com/contact-us?ref=njs-profile"
-                      >
+                      <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">
                         Contact Us
                       </a>
                     </li>
@@ -145,16 +121,12 @@ const Footer = () => {
               <div className="text-sm text-blueGray-500 font-semibold py-1">
                 Copyright © <span id="get-current-year">2021</span>
                 <a
-                  href="https://www.creative-tim.com/product/notus-js"
                   className="text-blueGray-500 hover:text-gray-800"
                   target="_blank"
                 />{" "}
                 Notus JS by
-                <a
-                  href="https://www.creative-tim.com?ref=njs-profile"
-                  className="text-blueGray-500 hover:text-blueGray-800"
-                >
-                  Creative Tim
+                <a className="text-blueGray-500 hover:text-blueGray-800">
+                  Monirul Jim
                 </a>
                 .
               </div>

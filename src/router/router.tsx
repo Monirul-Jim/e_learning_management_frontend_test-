@@ -13,6 +13,7 @@ import AddParentModule from "../dashboard/AdminDashboard/AddParentModule/AddPare
 import AddModule from "../dashboard/AdminDashboard/AddModule/AddModule";
 import AddVideo from "../dashboard/AdminDashboard/AddVideo/AddVideo";
 import SeeClass from "../dashboard/StudentDashboard/SeeClass/SeeClass";
+import Information from "../dashboard/Information";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       //   path: "",
       //   element: <Navigate to="add-course" />,
       // },
+      {
+        path: "",
+        element: <Information />,
+      },
       {
         path: "add-course",
         element: <AddCourse />,

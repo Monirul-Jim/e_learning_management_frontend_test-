@@ -25,11 +25,8 @@ const AddParentModule = () => {
   const [addParentModule, { isLoading: adding }] = useAddParentModuleMutation();
   const [updateParentModules, { isLoading: updating }] =
     useUpdateParentModulesMutation();
-  const {
-    data: parentModuleData,
-    isLoading: parentLoading,
-    error: parentError,
-  } = useGetParentModulesQuery(null);
+  const { data: parentModuleData, isLoading: parentLoading } =
+    useGetParentModulesQuery(null);
 
   const onSubmit = async (data: { title: string }) => {
     if (!data.title) return;
@@ -51,7 +48,6 @@ const AddParentModule = () => {
   };
 
   const handleUpdateClick = (module: ParentModuleData) => {
-    console.log("Data being submitted:", selectedModule);
     setSelectedModule(module);
     reset({ title: module.title });
   };
@@ -100,9 +96,6 @@ const AddParentModule = () => {
       </form>
 
       {parentLoading && <p>Loading parent modules...</p>}
-      {parentError && (
-        <p>Failed to load parent modules: {parentError.message}</p>
-      )}
 
       {parentModuleData && parentModuleData.data && (
         <div className="mt-8">

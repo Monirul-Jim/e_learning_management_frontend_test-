@@ -1,4 +1,34 @@
-const AddModuleCard = ({ module }) => {
+interface CategoryDetail {
+  id: number;
+  category: string;
+  slug: string;
+}
+
+interface ParentModule {
+  id: number;
+  title: string;
+}
+
+interface CourseDetails {
+  id: number;
+  category_details: CategoryDetail[];
+  description: string;
+  image: string;
+  price: number;
+  title: string;
+}
+
+interface AddModuleCardProps {
+  module: {
+    id: number;
+    course_details: CourseDetails;
+    parent_module_details?: ParentModule;
+    description: string;
+    title: string;
+  };
+}
+
+const AddModuleCard = ({ module }: AddModuleCardProps) => {
   return (
     <li
       key={module.id}
