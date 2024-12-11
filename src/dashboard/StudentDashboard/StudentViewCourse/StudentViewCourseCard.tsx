@@ -1,4 +1,19 @@
-const StudentViewCourseCard = ({ order }) => {
+interface Course {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
+interface Order {
+  id: string;
+  course: Course;
+}
+
+interface StudentViewCourseCardProps {
+  order: Order;
+}
+const StudentViewCourseCard = ({ order }: StudentViewCourseCardProps) => {
   return (
     <div className="flex flex-col bg-white shadow-lg rounded-lg overflow-hidden max-w-xs mx-auto transform transition-all hover:scale-105 hover:shadow-xl">
       {/* Image Section */}
