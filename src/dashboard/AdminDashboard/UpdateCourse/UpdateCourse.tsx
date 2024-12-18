@@ -1,13 +1,33 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   useGetCoursesQuery,
   useUpdateCourseMutation,
 } from "../../../redux/api/courseApi";
 import { useGetCategoriesQuery } from "../../../redux/api/categoryApi";
 import { toast } from "react-toastify";
+interface CourseData {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  category_details: CategoryDetail[];
+}
 
+interface CategoryDetail {
+  id: number;
+  category: string;
+  slug: string;
+}
+interface CourseFormData {
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  categories: number[]; // Array of category IDs
+}
 const UpdateCourse = () => {
   const { id } = useParams();
 
@@ -23,12 +43,12 @@ const UpdateCourse = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm<CourseFormData>();
 
   useEffect(() => {
     if (courseData) {
       const existingCourse = courseData?.data?.find(
-        (course) => course.id === Number(id)
+        (course: CourseData) => course.id === Number(id)
       );
       if (existingCourse) {
         setValue("image", existingCourse.image);
@@ -37,22 +57,25 @@ const UpdateCourse = () => {
         setValue("price", existingCourse.price);
         setValue(
           "categories",
-          existingCourse.category_details.map((cat) => cat.id)
+          existingCourse.category_details.map((cat: CategoryDetail) => cat.id)
         );
       }
     }
   }, [courseData, id, setValue]);
 
-  const onSubmit = async (data) => {
-    const categoryData = data.categories.map((categoryId) => {
-      const category = categoriesData?.data.find(
-        (cat) => cat.id === categoryId
-      );
-      return {
-        id: categoryId,
-        category: category?.category || null,
-      };
-    });
+  const onSubmit: SubmitHandler<CourseFormData> = async (data) => {
+    const categoryData = categoriesData.data.map(
+      (categoryId: CategoryDetail) => {
+        const category = categoriesData?.data.find(
+          (cat: CategoryDetail) => cat.id === categoryId.id // Properly accessing `id`
+        );
+
+        return {
+          id: categoryId,
+          category: category?.category || null,
+        };
+      }
+    );
 
     try {
       await updateCourse({ id, ...data, category_details: categoryData });
@@ -132,7 +155,7 @@ const UpdateCourse = () => {
             })}
           >
             {categoriesData &&
-              categoriesData.data.map((category) => (
+              categoriesData.data.map((category: CategoryDetail) => (
                 <option key={category.id} value={category.id}>
                   {category.category}
                 </option>

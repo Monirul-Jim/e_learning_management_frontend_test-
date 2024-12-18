@@ -3,13 +3,12 @@ interface CategoryDetail {
   category: string;
   slug: string;
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface ModuleFormData {
-  course: number;
-  parent_module?: number;
-  title: string;
-  description?: string;
-}
+// interface ModuleFormData {
+//   course: number;
+//   parent_module?: number;
+//   title: string;
+//   description?: string;
+// }
 
 interface Course {
   id: number;
@@ -42,13 +41,12 @@ export interface Module {
   description: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface ModulesResponse {
-  statusCode: number;
-  success: boolean;
-  message: string;
-  data: Module[];
-}
+// interface ModulesResponse {
+//   statusCode: number;
+//   success: boolean;
+//   message: string;
+//   data: Module[];
+// }
 // Define the type for the form data
 interface FormData {
   course: number; // ID of the selected course
@@ -118,8 +116,6 @@ const AddModule = () => {
       ), // Only IDs for categories
     };
 
-
-
     try {
       await addModules(payload).unwrap();
       toast.success("Module added successfully");
@@ -169,10 +165,10 @@ const AddModule = () => {
         {/* Parent Module Selection */}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Select Parent Module (Optional)
+            Select Parent Module
           </label>
           <select
-            {...register("parent_module")}
+            {...register("parent_module", { required: true })}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="">Select a parent module...</option>

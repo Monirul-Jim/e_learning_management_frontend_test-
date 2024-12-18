@@ -627,9 +627,10 @@ const SeeClass: React.FC = () => {
             <div key={parentTitle} className="mb-4 transition-all duration-300">
               <h3
                 onClick={() => toggleParentCollapse(parentTitle)}
-                className="font-semibold text-gray-700 mb-2 cursor-pointer transition-all duration-300"
+                className="font-semibold text-gray-700 mb-3 cursor-pointer transition-all duration-300"
               >
-                {parentTitle} {collapsedParents[parentTitle] ? "▲" : "▼"}
+                <span className="text-2xl">{parentTitle}</span>{" "}
+                {collapsedParents[parentTitle] ? "▲" : "▼"}
               </h3>
               <div
                 className={`${
@@ -642,9 +643,10 @@ const SeeClass: React.FC = () => {
                   <div key={childTitle} className="ml-4 mb-2">
                     <h4
                       onClick={() => toggleChildCollapse(childTitle)}
-                      className="font-semibold text-gray-600 mb-1 cursor-pointer transition-all duration-300"
+                      className="font-semibold text-gray-600 mb-3 cursor-pointer transition-all duration-300"
                     >
-                      {childTitle} {collapsedChildren[childTitle] ? "▲" : "▼"}
+                      <span className="text-xl">{childTitle}</span>{" "}
+                      {collapsedChildren[childTitle] ? "▲" : "▼"}
                     </h4>
                     <div
                       className={`${
