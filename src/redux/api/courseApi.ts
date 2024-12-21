@@ -137,12 +137,9 @@ const courseApi = baseApi.injectEndpoints({
     getQuizzes: builder.query({
       query: (moduleTitle) => {
         return moduleTitle
-          ? `/learning/quizzes?module_title=${moduleTitle}`
+          ? `/learning/quizzes?module_title=${encodeURIComponent(moduleTitle)}`
           : "quizzes";
       },
-    }),
-    getQuizById: builder.query({
-      query: (id) => `/learning/quizzes/${id}`,
     }),
   }),
 });

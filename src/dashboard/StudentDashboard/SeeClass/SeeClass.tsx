@@ -413,6 +413,11 @@ const SeeClass: React.FC = () => {
       setModuleTitle(videoData?.data[0]?.module_details?.title);
     }
   }, [videoData]);
+  useEffect(() => {
+    if (selectedVideo) {
+      setModuleTitle(selectedVideo.module_details?.title);
+    }
+  }, [selectedVideo]);
 
   if (isLoading) return <p>Loading videos...</p>;
   if (error) return <p>Error loading videos</p>;
@@ -481,6 +486,10 @@ const SeeClass: React.FC = () => {
         {!showQuiz ? (
           selectedVideo && (
             <div className="space-y-4">
+              <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-6 animate__animated animate__fadeInUp">
+                {selectedVideo?.title}
+              </h1>
+
               <SeeClassVideo video={selectedVideo} />
               <div className="flex justify-end mt-4">
                 <button
@@ -559,7 +568,7 @@ const SeeClass: React.FC = () => {
                             : "max-h-full"
                         } transition-all duration-300`}
                       >
-                        {videos?.map((videoItem: Video, index) => (
+                        {/* {videos?.map((videoItem: Video, index) => (
                           <div key={videoItem.id}>
                             <div
                               onClick={() => setSelectedVideo(videoItem)}
@@ -590,6 +599,50 @@ const SeeClass: React.FC = () => {
                                   >
                                     Take Quiz
                                   </button>
+                                </div>
+                              )}
+                          </div>
+                        ))} */}
+                        {videos?.map((videoItem: Video, index) => (
+                          <div key={videoItem.id}>
+                            <div
+                              onClick={() => setSelectedVideo(videoItem)}
+                              className={`cursor-pointer p-4 mb-2 rounded-lg shadow-lg transition-all duration-300 ${
+                                selectedVideo &&
+                                selectedVideo.id === videoItem.id
+                                  ? "bg-blue-700 text-white font-bold"
+                                  : "bg-white text-gray-800 hover:bg-blue-500 hover:text-white"
+                              }`}
+                            >
+                              <div className="flex justify-between items-center">
+                                <span className="text-lg font-semibold">
+                                  {videoItem.title}
+                                </span>
+                                <span className="text-sm text-gray-400">
+                                  {videoItem.duration}
+                                </span>
+                              </div>
+                            </div>
+
+                            {index === videos.length - 1 &&
+                              relatedQuizzes?.length > 0 && (
+                                <div
+                                  onClick={() => {
+                                    handleTakeQuiz(relatedQuizzes);
+                                  }}
+                                  className={`cursor-pointer mt-2 flex justify-between items-center p-4 rounded-lg transition-all duration-300 ${
+                                    selectedVideo &&
+                                    selectedVideo.id === videoItem.id
+                                      ? "bg-blue-700 text-white font-bold"
+                                      : "bg-white text-gray-800 hover:bg-blue-500 hover:text-white"
+                                  }`}
+                                >
+                                  <span className="text-lg font-semibold">
+                                    Take Quiz
+                                  </span>
+                                  <span className="text-sm text-gray-400">
+                                    Quiz Available
+                                  </span>
                                 </div>
                               )}
                           </div>

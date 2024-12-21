@@ -149,11 +149,10 @@ const QuizSection: React.FC<QuizSectionProps> = ({ data, onBack }) => {
     [key: number]: string;
   }>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState<number | null>(null); // Track the score
+  const [score, setScore] = useState<number | null>(null);
 
   const currentQuestion = data[currentQuestionIndex];
 
-  // Handle selecting an answer
   const handleOptionChange = (questionId: number, selected: string) => {
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
@@ -161,21 +160,18 @@ const QuizSection: React.FC<QuizSectionProps> = ({ data, onBack }) => {
     }));
   };
 
-  // Handle navigating to the next question
   const handleNext = () => {
     if (currentQuestionIndex < data.length - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     }
   };
 
-  // Handle navigating to the previous question
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
     }
   };
 
-  // Handle submission of the quiz
   const handleSubmit = () => {
     let calculatedScore = 0;
 
@@ -183,23 +179,20 @@ const QuizSection: React.FC<QuizSectionProps> = ({ data, onBack }) => {
       console.log("Correct Answer Key:", question.questions.correctAnswer);
       console.log("Options Array:", question.questions.options);
 
-      // Convert correctAnswer (e.g., "b") to its corresponding index (e.g., 1)
       const correctAnswerIndex =
         question.questions.correctAnswer.charCodeAt(0) - "a".charCodeAt(0);
 
-      // Get the correct option's text
       const correctOption =
         question.questions.options[correctAnswerIndex]?.text;
 
       console.log("Correct Option Text:", correctOption);
 
-      // Compare the selected answer with the correct option's text
       if (selectedAnswers[question.id] === correctOption) {
         calculatedScore += 1;
       }
     });
 
-    setScore(calculatedScore); // Update the score
+    setScore(calculatedScore);
     console.log("Quiz submitted", selectedAnswers, `Score: ${calculatedScore}`);
   };
 
@@ -297,12 +290,6 @@ const QuizSection: React.FC<QuizSectionProps> = ({ data, onBack }) => {
           <p className="text-md">
             Your Score: {score} / {data.length}
           </p>
-          <button
-            onClick={onBack}
-            className="bg-blue-500 text-white py-2 px-4 rounded-md mt-4"
-          >
-            Back to Video
-          </button>
         </div>
       )}
     </div>

@@ -15,8 +15,13 @@ import AddVideo from "../dashboard/AdminDashboard/AddVideo/AddVideo";
 import SeeClass from "../dashboard/StudentDashboard/SeeClass/SeeClass";
 import Information from "../dashboard/Information";
 import AddQuiz from "../dashboard/AdminDashboard/AddQuiz/AddQuiz";
+import NotFoundPage from "../components/NotFoundPage/NotFoundPage";
 
 const router = createBrowserRouter([
+  {
+    path: "*",
+    element: <NotFoundPage />,
+  },
   {
     path: "/",
     element: <App />,
