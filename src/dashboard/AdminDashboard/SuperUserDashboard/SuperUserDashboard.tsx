@@ -202,6 +202,18 @@ const SuperUserDashboard = () => {
         </li>
         <li>
           <a
+            href="/dashboard/add-quiz"
+            className={`block px-4 py-2 rounded-md text-gray-700 hover:bg-blue-500 hover:text-white ${
+              location.pathname === "/dashboard/add-quiz"
+                ? "bg-blue-500 text-white"
+                : ""
+            }`}
+          >
+            Add Quiz
+          </a>
+        </li>
+        <li>
+          <a
             href="/"
             className={`block px-4 py-2 rounded-md text-gray-700 hover:bg-blue-500 hover:text-white ${
               location.pathname === "/" ? "bg-blue-500 text-white" : ""

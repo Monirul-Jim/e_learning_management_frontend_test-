@@ -38,7 +38,10 @@ const CourseSection = () => {
     : courseData?.data;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-10">
+    <div
+      className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-10 scroll-smooth"
+      id="course"
+    >
       <div className="lg:col-span-1 bg-white shadow-md rounded-lg p-6 h-max sticky top-8">
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Course Categories

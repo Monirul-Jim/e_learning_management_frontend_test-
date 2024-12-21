@@ -103,6 +103,47 @@ const courseApi = baseApi.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+    addQuiz: builder.mutation({
+      query: (data) => ({
+        url: "/learning/quizzes/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["quiz"],
+    }),
+    getQuizAdmin: builder.query({
+      query: () => ({
+        url: "/learning/quizzes/",
+        method: "GET",
+      }),
+      providesTags: ["quiz"],
+    }),
+    updateQuiz: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `/learning/quizzes/${id}/`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["quiz"],
+    }),
+
+    deleteQuiz: builder.mutation({
+      query: (id) => ({
+        url: `/learning/quizzes/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["quiz"],
+    }),
+    getQuizzes: builder.query({
+      query: (moduleTitle) => {
+        return moduleTitle
+          ? `/learning/quizzes?module_title=${moduleTitle}`
+          : "quizzes";
+      },
+    }),
+    getQuizById: builder.query({
+      query: (id) => `/learning/quizzes/${id}`,
+    }),
   }),
 });
 
@@ -120,4 +161,9 @@ export const {
   useGetVideosQuery,
   useGetModulesQuery,
   useGetSingleVideoQuery,
+  useAddQuizMutation,
+  useGetQuizAdminQuery,
+  useUpdateQuizMutation,
+  useDeleteQuizMutation,
+  useGetQuizzesQuery,
 } = courseApi;
