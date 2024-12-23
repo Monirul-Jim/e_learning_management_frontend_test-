@@ -502,7 +502,7 @@ const AddQuiz = () => {
                 <option value="" disabled>
                   Select Correct Answer
                 </option>
-                {watch("options").map((option, index) => (
+                {watch("options").map((_, index) => (
                   <option key={index} value={String.fromCharCode(97 + index)}>
                     {`Option ${String.fromCharCode(65 + index)}`}
                   </option>
