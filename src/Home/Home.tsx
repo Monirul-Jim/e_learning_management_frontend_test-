@@ -1,5 +1,6 @@
 import AboutSection from "./AboutSection/AboutSection";
 import CourseSection from "./CourseSection/CourseSection";
+import FAQSection from "./FAQSection/FAQSection";
 import HeroSection from "./HeroSection/HeroSection";
 import HiredStudent from "./HiredStudent/HiredStudent";
 import WhyChooseUs from "./WhyChooseUs/WhyChooseUs";
@@ -11,6 +12,7 @@ const Home = () => {
       <CourseSection />
       <HiredStudent />
       <WhyChooseUs />
+      <FAQSection />
       <AboutSection />
     </div>
   );

@@ -219,7 +219,10 @@ const HiredStudent = () => {
     setShowModal(false);
   };
   return (
-    <div className="relative w-full mx-auto overflow-hidden p-4 rounded-lg">
+    <div className="relative w-full mx-auto overflow-hidden p-4 rounded-lg mt-10 mb-8">
+      <h1 className="text-2xl text-center font-semibold mb-8">
+        Our Heroes In Top Company
+      </h1>
       {/* Carousel Inner */}
       <div
         className="grid grid-rows-2 grid-flow-col gap-4 transition-transform duration-700 ease-in-out"
