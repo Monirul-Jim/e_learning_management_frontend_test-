@@ -2,6 +2,7 @@ import AboutSection from "./AboutSection/AboutSection";
 import CourseSection from "./CourseSection/CourseSection";
 import HeroSection from "./HeroSection/HeroSection";
 import HiredStudent from "./HiredStudent/HiredStudent";
+import WhyChooseUs from "./WhyChooseUs/WhyChooseUs";
 
 const Home = () => {
   return (
@@ -9,6 +10,7 @@ const Home = () => {
       <HeroSection />
       <CourseSection />
       <HiredStudent />
+      <WhyChooseUs />
       <AboutSection />
     </div>
   );
