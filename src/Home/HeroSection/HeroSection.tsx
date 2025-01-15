@@ -2,10 +2,10 @@ const HeroSection = () => {
   return (
     <div>
       <section>
-        <div className="bg-black text-white py-20">
+        <div className=" py-20">
           <div className="container mx-auto flex flex-col md:flex-row items-center my-12 md:my-24">
             <div className="flex flex-col w-full lg:w-1/3 justify-center items-start p-8">
-              <h1 className="text-3xl md:text-5xl p-2 text-yellow-300 tracking-loose">
+              <h1 className="text-3xl md:text-5xl p-2 text-blue-700 tracking-loose">
                 TechFest
               </h1>
               <h2 className="text-3xl md:text-5xl leading-relaxed md:leading-snug mb-2">
@@ -17,7 +17,7 @@ const HeroSection = () => {
               </p>
               <a
                 href="#"
-                className="bg-transparent hover:bg-yellow-300 text-yellow-300 hover:text-black rounded shadow hover:shadow-lg py-2 px-4 border border-yellow-300 hover:border-transparent"
+                className="inline-block bg-blue-600 text-white text-lg font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg focus:ring-4 focus:ring-blue-300 transition-all duration-300"
               >
                 Explore Now
               </a>
