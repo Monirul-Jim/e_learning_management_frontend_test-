@@ -8,14 +8,14 @@ import AddCategory from "../dashboard/AdminDashboard/AddCategory/AddCategory";
 import UpdateCourse from "../dashboard/AdminDashboard/UpdateCourse/UpdateCourse";
 import Cart from "../Cart/Cart";
 import Home from "../Home/Home";
-import StudentViewCourse from "../dashboard/StudentDashboard/StudentViewCourse/StudentViewCourse";
 import AddParentModule from "../dashboard/AdminDashboard/AddParentModule/AddParentModule";
 import AddModule from "../dashboard/AdminDashboard/AddModule/AddModule";
 import AddVideo from "../dashboard/AdminDashboard/AddVideo/AddVideo";
-import SeeClass from "../dashboard/StudentDashboard/SeeClass/SeeClass";
 import Information from "../dashboard/Information";
 import AddQuiz from "../dashboard/AdminDashboard/AddQuiz/AddQuiz";
 import NotFoundPage from "../components/NotFoundPage/NotFoundPage";
+import { StudentViewCourse } from "../dashboard/StudentDashboard/StudentViewCourse/StudentViewCourse";
+import { SeeClass } from "../dashboard/StudentDashboard/SeeClass/SeeClass";
 
 const router = createBrowserRouter([
   {

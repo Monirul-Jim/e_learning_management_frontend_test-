@@ -1,5 +1,5 @@
 import { useAppSelector } from "../redux/feature/hooks";
-import { RootState } from "../redux/feature/store";
+import {type RootState } from "../redux/feature/store";
 import AdminExtraSection from "./ExtraSection/AdminExtraSection";
 import StudentExtraSection from "./ExtraSection/StudentExtraSection";
 

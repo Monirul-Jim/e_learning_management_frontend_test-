@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {type  SubmitHandler, useForm } from "react-hook-form";
 import {
   useGetCoursesQuery,
   useUpdateCourseMutation,

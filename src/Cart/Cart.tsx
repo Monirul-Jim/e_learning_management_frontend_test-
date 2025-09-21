@@ -56,7 +56,7 @@
 
 import { useAppSelector, useAppDispatch } from "../redux/feature/hooks";
 import { clearCart, removeFromCart } from "../redux/feature/cartSlice";
-import { RootState } from "../redux/feature/store";
+import {type RootState } from "../redux/feature/store";
 import { usePurchaseOrderMutation } from "../redux/api/paymentApi";
 const Cart = () => {
   const cartItems = useAppSelector((state: RootState) => state.cart.items);

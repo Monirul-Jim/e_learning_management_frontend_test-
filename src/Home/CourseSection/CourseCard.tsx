@@ -1,126 +1,16 @@
-// import { useState } from "react";
-// import { useAppDispatch, useAppSelector } from "../../redux/feature/hooks"; // Import useAppSelector
-// import { addToCart } from "../../redux/feature/cartSlice";
-// import { toast } from "react-toastify";
-// import { RootState } from "../../redux/feature/store";
-// // Category type
-// interface Category {
-//   id: number;
-//   category: string;
-//   slug: string;
-// }
-
-// // Course type
-// interface Course {
-//   id: number;
-//   image: string;
-//   title: string;
-//   description: string;
-//   price: number;
-//   category_details: Category[];
-// }
-
-// // CourseCard props
-// interface CourseCardProps {
-//   course: Course;
-// }
-// const CourseCard = ({ course }: CourseCardProps) => {
-//   const dispatch = useAppDispatch();
-//   const cartItems = useAppSelector((state) => state.cart.items);
-//   const user = useAppSelector((state: RootState) => state.auth.user);
-//   const [isExpanded, setIsExpanded] = useState(false);
-
-//   const toggleDescription = () => {
-//     setIsExpanded(!isExpanded);
-//   };
-
-//   const handleAddCourse = () => {
-//     const isCourseInCart = cartItems.some((item) => item.id === course.id);
-
-//     if (isCourseInCart) {
-//       toast.info(`'${course.title}' is already added to the cart`, {
-//         autoClose: 1000,
-//       });
-//     } else {
-//       try {
-//         dispatch(addToCart(course));
-//         toast.success(`'${course.title}' added to cart`, {
-//           autoClose: 1000,
-//         });
-//       } catch (err) {
-//         console.error(err);
-//       }
-//     }
-//   };
-
-//   return (
-//     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-//       <img
-//         src={course.image}
-//         alt={course.title}
-//         className="w-full h-48 object-cover"
-//       />
-
-//       <div className="p-4">
-//         <h2 className="text-lg font-semibold text-gray-800">{course.title}</h2>
-
-//         <p className="text-gray-600 mt-2">
-//           {isExpanded
-//             ? course.description
-//             : `${course.description.substring(0, 100)}...`}
-//         </p>
-
-//         <button
-//           onClick={toggleDescription}
-//           className="text-blue-500 font-semibold mt-2 hover:underline focus:outline-none"
-//         >
-//           {isExpanded ? "Read Less" : "Read More"}
-//         </button>
-
-//         <div className="mt-4">
-//           <span className="text-blue-500 font-bold text-lg">
-//             ${course.price}
-//           </span>
-//         </div>
-//         <div className="flex flex-wrap gap-2 mt-2">
-//           {course.category_details?.map((category) => (
-//             <span
-//               key={category.id}
-//               className="bg-blue-100 text-blue-700 text-sm px-2 py-1 rounded-lg"
-//             >
-//               {category.category}
-//             </span>
-//           ))}
-//         </div>
-//         {user ? (
-//           <>
-//             {" "}
-//             <button
-//               onClick={handleAddCourse}
-//               className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
-//             >
-//               Add to Cart
-//             </button>
-//           </>
-//         ) : (
-//           <>
-//             {" "}
-//             <button className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
-//               <a href="/login"> Login</a>
-//             </button>{" "}
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CourseCard;
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/feature/hooks";
-import { addToCart, CartItem } from "../../redux/feature/cartSlice";
+import { addToCart, type CartItem } from "../../redux/feature/cartSlice";
 import { toast } from "react-toastify";
-import { RootState } from "../../redux/feature/store";
+import { type RootState } from "../../redux/feature/store";
+
+import { motion } from 'framer-motion';
+import { Clock, Star, ShoppingCart, Play } from "lucide-react";
+import { Button } from '../../components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/ui/card';
+import { Badge } from '../../components/ui/badge';
+
+// Category type
 interface Category {
   id: number;
   category: string;
@@ -134,6 +24,8 @@ interface Course {
   title: string;
   description: string;
   price: number;
+  duration?: string;
+  rating?: number;
   category_details: Category[];
 }
 
@@ -141,106 +33,130 @@ interface Course {
 interface CourseCardProps {
   course: Course;
 }
-// Typing the props
-const CourseCard = ({ course }: CourseCardProps) => {
+
+export function CourseCard({ course }: CourseCardProps) {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
   const user = useAppSelector((state: RootState) => state.auth.user);
+
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleDescription = () => {
-    setIsExpanded(!isExpanded);
-  };
+  // Toggle description
+  const toggleDescription = () => setIsExpanded(!isExpanded);
 
-  // Helper function to map Course to CartItem
-  const mapCourseToCartItem = (course: Course): CartItem => {
-    return {
-      id: course.id,
-      title: course.title,
-      description: course.description,
-      price: course.price,
-      image: course.image,
-      quantity: 1, // Initialize quantity to 1
-    };
-  };
+  // Map Course to CartItem
+  const mapCourseToCartItem = (course: Course): CartItem => ({
+    id: course.id,
+    title: course.title,
+    description: course.description,
+    price: course.price,
+    image: course.image,
+    quantity: 1,
+  });
 
+  // Add to cart handler
   const handleAddCourse = () => {
-    const cartItem = mapCourseToCartItem(course);
+    if (!user) {
+      toast.info("Please login to add courses to cart.", { autoClose: 1000 });
+      return;
+    }
 
+    const cartItem = mapCourseToCartItem(course);
     const isCourseInCart = cartItems.some((item) => item.id === course.id);
 
     if (isCourseInCart) {
-      toast.info(`'${course.title}' is already added to the cart`, {
-        autoClose: 1000,
-      });
+      toast.info(`'${course.title}' is already in your cart`, { autoClose: 1000 });
     } else {
-      try {
-        dispatch(addToCart(cartItem)); // Dispatch the CartItem
-        toast.success(`'${course.title}' added to cart`, {
-          autoClose: 1000,
-        });
-      } catch (err) {
-        console.error(err);
-      }
+      dispatch(addToCart(cartItem));
+      toast.success(`'${course.title}' added to cart`, { autoClose: 1000 });
     }
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-      <img
-        src={course.image}
-        alt={course.title}
-        className="w-full h-48 object-cover"
-      />
-      <div className="p-4">
-        <h2 className="text-lg font-semibold text-gray-800">{course.title}</h2>
-        <p className="text-gray-600 mt-2">
-          {isExpanded
-            ? course.description
-            : `${course.description.substring(0, 100)}...`}
-        </p>
-
-        <button
-          onClick={toggleDescription}
-          className="text-blue-500 font-semibold mt-2 hover:underline focus:outline-none"
-        >
-          {isExpanded ? "Read Less" : "Read More"}
-        </button>
-
-        <div className="mt-4">
-          <span className="text-blue-500 font-bold text-lg">
-            ${course.price}
-          </span>
-        </div>
-        <div className="flex flex-wrap gap-2 mt-2">
-          {course.category_details?.map((category) => (
-            <span
-              key={category.id}
-              className="bg-blue-100 text-blue-700 text-sm px-2 py-1 rounded-lg"
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ y: -8 }}
+      className="h-full"
+    >
+      <Card className="h-full bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/30 transition-all duration-300 overflow-hidden group">
+        {/* Course Image */}
+        <div className="relative overflow-hidden">
+          <img
+            src={course.image}
+            alt={course.title}
+            className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent"></div>
+          <div className="absolute top-4 left-4">
+            <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
+              {course.category_details[0]?.category}
+            </Badge>
+          </div>
+          <div className="absolute top-4 right-4">
+            <motion.div 
+              className="bg-card/90 backdrop-blur-sm p-2 rounded-full border border-border/50"
+              whileHover={{ scale: 1.1 }}
             >
-              {category.category}
-            </span>
-          ))}
+              <Play size={16} className="text-primary" />
+            </motion.div>
+          </div>
         </div>
-        {user ? (
-          <>
+
+        {/* Course Header */}
+        <CardHeader className="pb-3">
+          <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors duration-300">
+            {course.title}
+          </CardTitle>
+          <CardDescription className="line-clamp-3">
+            {isExpanded ? course.description : `${course.description.substring(0, 100)}...`}
             <button
-              onClick={handleAddCourse}
-              className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+              onClick={toggleDescription}
+              className="text-primary font-medium ml-2 hover:underline"
             >
-              Add to Cart
+              {isExpanded ? 'Show Less' : 'Read More'}
             </button>
-          </>
-        ) : (
-          <>
-            <button className="mt-4 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
-              <a href="/login"> Login</a>
-            </button>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
+          </CardDescription>
+        </CardHeader>
 
-export default CourseCard;
+        {/* Course Stats */}
+        <CardContent className="pb-3">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              {course.rating && (
+                <div className="flex items-center gap-1">
+                  <Star size={16} className="fill-yellow-400 text-yellow-400" />
+                  <span className="font-medium">{course.rating}</span>
+                </div>
+              )}
+              {course.duration && (
+                <div className="flex items-center gap-1">
+                  <Clock size={16} />
+                  <span>{course.duration}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="flex items-center justify-between">
+            <span className="text-2xl font-bold text-primary">${course.price}</span>
+          </div>
+        </CardContent>
+
+        {/* Add to Cart */}
+        <CardFooter className="pt-3">
+          <Button
+            onClick={handleAddCourse}
+            className="w-full group bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300"
+          >
+            <ShoppingCart className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
+            {user ? "Add to Cart" : "Login to Add"}
+          </Button>
+        </CardFooter>
+      </Card>
+    </motion.div>
+  );
+}

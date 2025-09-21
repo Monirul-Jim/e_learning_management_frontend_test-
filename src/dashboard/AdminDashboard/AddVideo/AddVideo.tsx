@@ -258,7 +258,7 @@
 // };
 
 // export default AddVideo;
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm,type SubmitHandler } from "react-hook-form";
 import {
   useAddVideosMutation,
   useGetModulesQuery,

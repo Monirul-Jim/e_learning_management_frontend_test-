@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useAppSelector } from "../redux/feature/hooks";
-import { RootState } from "../redux/feature/store";
+import {type RootState } from "../redux/feature/store";
 import SuperUserDashboard from "./AdminDashboard/SuperUserDashboard/SuperUserDashboard";
 import StudentDashBoard from "./StudentDashboard/StudentDashboard/StudentDashBoard";
 
