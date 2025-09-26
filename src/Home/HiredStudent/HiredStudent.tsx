@@ -218,10 +218,7 @@ export function HiredStudents() {
     setShowModal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
+  
   const nextSlide = () => {
     setScrollIndex((prev) => (prev + 1) % Math.max(1, images.length - 11));
   };

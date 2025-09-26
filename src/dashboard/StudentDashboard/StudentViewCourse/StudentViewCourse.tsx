@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Search, Filter, Grid, List } from 'lucide-react';
+import { BookOpen, Search, Grid, List } from 'lucide-react';
 import { useState } from 'react';
 
 import { StudentViewCourseCard } from './StudentViewCourseCard';
@@ -23,12 +23,7 @@ interface Order {
   course: Course;
 }
 
-interface StudentViewCourseProps {
-  user: any;
-  orders: Order[];
-  isLoading: boolean;
-  error: any;
-}
+
 
 export function StudentViewCourse() {
   const [searchTerm, setSearchTerm] = useState('');

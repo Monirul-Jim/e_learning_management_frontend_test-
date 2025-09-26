@@ -111,7 +111,7 @@ export function CourseSection() {
             >
               <h3 className="text-2xl font-semibold">
                 {selectedSlug 
-                  ? `${categoryData?.data?.find(cat => cat.slug === selectedSlug)?.category} Courses`
+                  ? `${categoryData?.data?.find((cat:Category) => cat.slug === selectedSlug)?.category} Courses`
                   : 'All Available Courses'
                 }
               </h3>

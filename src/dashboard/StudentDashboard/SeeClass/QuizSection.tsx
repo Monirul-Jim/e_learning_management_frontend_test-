@@ -198,7 +198,7 @@ export function QuizSection({ data, onBack }: QuizSectionProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: string }>({});
   const [showResults, setShowResults] = useState(false);
-  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [_quizCompleted, setQuizCompleted] = useState(false);
 
   const currentQuiz = data[currentQuestionIndex];
   const totalQuestions = data.length;

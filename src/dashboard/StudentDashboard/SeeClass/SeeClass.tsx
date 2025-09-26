@@ -65,13 +65,6 @@ export interface Quiz {
   };
 }
 
-interface SeeClassProps {
-  videoData: { data: Video[] };
-  qData: { data: Quiz[] };
-  isLoading: boolean;
-  error: any;
-}
-
 export function SeeClass() {
     const { id } = useParams<{ id: string }>();
   const [moduleTitle, setModuleTitle] = useState<string | null>(null);
