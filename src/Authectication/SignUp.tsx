@@ -29,6 +29,7 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
 import CopyCredential from "../components/CopyCredential/CopyCredential";
+
 export type TUser = {
   first_name: string;
   last_name: string;
