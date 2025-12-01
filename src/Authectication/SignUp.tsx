@@ -332,11 +332,10 @@ const SignUp = () => {
                           className="flex items-center gap-2 text-xs"
                         >
                           <CheckCircle
-                            className={`h-3 w-3 ${
-                              req.met
+                            className={`h-3 w-3 ${req.met
                                 ? "text-green-500"
                                 : "text-muted-foreground"
-                            }`}
+                              }`}
                           />
                           <span
                             className={
@@ -440,23 +439,20 @@ const SignUp = () => {
             </a>
           </p>
         </motion.div>
-          <div className="mb-6 mt-10">
-            <h3 className="text-sm font-semibold mb-2">Admin Credentials</h3>
-            <CopyCredential
-              label="Email: jim@gmail.com"
-              value="jim@gmail.com"
-            />
-            <CopyCredential label="Password: 12345678" value="12345678" />
-          </div>
+        <div className="mb-6 mt-10">
+          <h3 className="text-sm font-semibold mb-2">Admin Credentials</h3>
+          <CopyCredential label="Email: admin@gmail.com" value="admin@gmail.com" />
+          <CopyCredential label="Password: 12345678" value="123456" />
+        </div>
 
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold mb-2">Student Credentials</h3>
-            <CopyCredential
-              label="Email: rahim@gmail.com"
-              value="rahim@gmail.com"
-            />
-            <CopyCredential label="Password: 123456aS!@" value="123456aS!@" />
-          </div>
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold mb-2">Student Credentials</h3>
+          <CopyCredential
+            label="Email: rahim@gmail.com"
+            value="rahim@gmail.com"
+          />
+          <CopyCredential label="Password: 123456aS!@" value="123456aS!@" />
+        </div>
 
         {/* Benefits Section */}
         <motion.div
@@ -479,7 +475,7 @@ const SignUp = () => {
               </div>
             </CardContent>
           </Card>
-        
+
         </motion.div>
       </div>
     </div>

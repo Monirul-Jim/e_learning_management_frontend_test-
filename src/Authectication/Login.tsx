@@ -272,8 +272,8 @@ const Login = () => {
           </p>
           <div className="mb-6">
   <h3 className="text-sm font-semibold mb-2">Admin Credentials</h3>
-  <CopyCredential label="Email: jim@gmail.com" value="jim@gmail.com" />
-  <CopyCredential label="Password: 12345678" value="12345678" />
+  <CopyCredential label="Email: admin@gmail.com" value="admin@gmail.com" />
+  <CopyCredential label="Password: 12345678" value="123456" />
 </div>
 
 <div className="mb-6">
